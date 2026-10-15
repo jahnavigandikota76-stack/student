@@ -1,0 +1,3918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InternConnect - Internship Discovery Platform &amp; Campus Buddy</title>
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & DESIGN SYSTEM (Blue, White, Light Purple Theme)
+       ========================================================================== */
+    :root {
+      /* Primary Brand Colors */
+      --primary: #4f46e5;         /* Deep Indigo */
+      --primary-hover: #4338ca;   /* Darker Indigo */
+      --primary-light: #eef2ff;   /* Soft Lavender Tint */
+      --primary-glow: rgba(79, 70, 229, 0.15);
+
+      /* Purple & Accent Colors */
+      --purple: #7c3aed;          /* Light Royal Purple */
+      --purple-light: #f5f3ff;
+      --accent-blue: #2563eb;     /* Vibrant Blue */
+      --accent-cyan: #06b6d4;
+
+      /* Neutral & Background Colors */
+      --bg-page: #f8fafc;         /* Crisp Light Slate */
+      --bg-card: #ffffff;         /* Pure White */
+      --bg-card-alt: #f1f5f9;     /* Subtle Gray */
+      --text-main: #0f172a;       /* Slate 900 for high readability */
+      --text-muted: #64748b;      /* Slate 500 for secondary text */
+      --text-subtle: #94a3b8;     /* Slate 400 for placeholders */
+      --border: #e2e8f0;          /* Clean border color */
+      --border-focus: #818cf8;
+
+      /* Status Colors */
+      --success: #10b981;
+      --success-light: #ecfdf5;
+      --warning: #f59e0b;
+      --warning-light: #fffbeb;
+      --danger: #ef4444;
+      --danger-light: #fef2f2;
+      --info: #0284c7;
+      --info-light: #f0f9ff;
+
+      /* Shadows & Border Radius */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --shadow-xl: 0 20px 25px -5px rgba(79, 70, 229, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+      /* Layout */
+      --container-max: 1240px;
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Typography */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      font-size: 15px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    input, select, textarea {
+      font-family: inherit;
+      font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      background-color: #fff;
+      color: var(--text-main);
+      outline: none;
+      transition: var(--transition);
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    /* ==========================================================================
+       2. REUSABLE ATOMIC & UTILITY CLASSES
+       ========================================================================== */
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      line-height: 1;
+    }
+    .badge-primary { background: var(--primary-light); color: var(--primary); }
+    .badge-purple { background: var(--purple-light); color: var(--purple); }
+    .badge-remote { background: #dcfce7; color: #15803d; }
+    .badge-hybrid { background: #e0f2fe; color: #0369a1; }
+    .badge-onsite { background: #fef3c7; color: #b45309; }
+    .badge-demo { background: #f1f5f9; color: #475569; border: 1px dashed #cbd5e1; font-size: 11px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      text-decoration: none !important;
+      white-space: nowrap;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+    .btn-lg {
+      padding: 13px 24px;
+      font-size: 15px;
+      border-radius: var(--radius-md);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.25);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(79, 70, 229, 0.35);
+    }
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card-alt);
+      border-color: #cbd5e1;
+    }
+    .btn-purple {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+      color: #fff;
+    }
+    .btn-purple:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-outline-primary {
+      background: transparent;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+    }
+    .btn-outline-primary:hover {
+      background: var(--primary-light);
+    }
+    .btn-danger {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid #fecaca;
+    }
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #ffffff;
+    }
+    .btn-disabled, .btn[disabled] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: 24px;
+    }
+    .section-header .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 4px;
+    }
+    .section-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+    }
+    .section-header p {
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-size: 15px;
+    }
+
+    /* Notice Banner */
+    .demo-notice-bar {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .demo-notice-bar span.icon {
+      font-size: 16px;
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION BAR & HEADER
+       ========================================================================== */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none !important;
+    }
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+    .brand-text h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+      letter-spacing: -0.4px;
+    }
+    .brand-text span {
+      font-size: 11px;
+      color: var(--purple);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+    .nav-link {
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .nav-link:hover {
+      color: var(--primary);
+      background-color: var(--primary-light);
+      text-decoration: none;
+    }
+    .nav-link.active {
+      color: var(--primary);
+      background-color: var(--primary-light);
+      font-weight: 700;
+    }
+    .nav-counter {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 99px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-chat-nav {
+      background: linear-gradient(135deg, var(--purple) 0%, var(--primary) 100%);
+      color: #fff !important;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.25);
+    }
+    .btn-chat-nav:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(124, 58, 237, 0.35);
+    }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      font-size: 24px;
+      color: var(--text-main);
+      padding: 6px;
+    }
+    .mobile-nav-drawer {
+      display: none;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 20px;
+    }
+    .mobile-nav-drawer.open {
+      display: block;
+    }
+    .mobile-nav-drawer .nav-link {
+      padding: 12px 14px;
+      font-size: 15px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 4px;
+    }
+
+    /* ==========================================================================
+       4. MAIN VIEW CONTAINER & SECTION MANAGEMENT
+       ========================================================================== */
+    main {
+      flex: 1;
+      padding: 28px 0 60px 0;
+    }
+    .app-view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .app-view.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       5. VIEW: HOME / DASHBOARD
+       ========================================================================== */
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, #3730a3 0%, #4f46e5 50%, #7c3aed 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 42px 36px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      margin-bottom: 32px;
+    }
+    .hero-banner::after {
+      content: "\1F393";
+      position: absolute;
+      right: 20px;
+      bottom: -15px;
+      font-size: 160px;
+      opacity: 0.12;
+      pointer-events: none;
+      user-select: none;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+    .hero-greeting {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 34px;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+    .hero-subtitle {
+      font-size: 16px;
+      opacity: 0.92;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* Hero Search Bar */
+    .hero-search-box {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      max-width: 650px;
+      margin-bottom: 18px;
+    }
+    .hero-search-box input {
+      flex: 1;
+      border: none;
+      padding: 12px 16px;
+      font-size: 15px;
+      color: var(--text-main);
+      background: transparent;
+    }
+    .hero-search-box input:focus {
+      box-shadow: none;
+    }
+    .hero-search-box button {
+      border-radius: var(--radius-sm);
+    }
+
+    .hero-quick-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+    }
+    .hero-quick-tags span {
+      opacity: 0.8;
+      font-weight: 600;
+    }
+    .hero-tag-pill {
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .hero-tag-pill:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Dashboard Metrics Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: var(--transition);
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .stat-icon.indigo { background: var(--primary-light); color: var(--primary); }
+    .stat-icon.purple { background: var(--purple-light); color: var(--purple); }
+    .stat-icon.green  { background: var(--success-light); color: var(--success); }
+    .stat-icon.amber  { background: var(--warning-light); color: var(--warning); }
+    .stat-details h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+    .stat-details p {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Dashboard 2-Column Section */
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    /* Cards Styling */
+    .card-panel {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .card-panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-panel-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Profile Widget in Home */
+    .profile-widget-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .profile-avatar-placeholder {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 700;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+    }
+    .profile-meta h4 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 3px;
+    }
+    .profile-meta p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .profile-skills-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .skill-pill {
+      background: var(--bg-card-alt);
+      color: var(--text-main);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Progress bar */
+    .profile-meter {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .meter-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .meter-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .meter-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--purple) 100%);
+      border-radius: 99px;
+      transition: width 0.5s ease;
+    }
+
+    /* Campus Buddy Quick Teaser Card */
+    .buddy-teaser-card {
+      background: linear-gradient(135deg, #f5f3ff 0%, #eff6ff 100%);
+      border: 1px solid #ddd6fe;
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+    .buddy-teaser-card .teaser-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .buddy-teaser-card .teaser-bot-icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+    .buddy-teaser-card h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .buddy-teaser-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+    .teaser-prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .teaser-prompt-btn {
+      background: #ffffff;
+      border: 1px solid #c7d2fe;
+      color: var(--primary);
+      text-align: left;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: var(--transition);
+    }
+    .teaser-prompt-btn:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      transform: translateX(3px);
+    }
+
+    /* ==========================================================================
+       6. INTERNSHIP CARDS (Used in Explore, Home, Recommended & Saved)
+       ========================================================================== */
+    .internships-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 20px;
+    }
+
+    .internship-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition);
+      position: relative;
+    }
+    .internship-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+    }
+
+    .card-top-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .company-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: #f1f5f9;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      border: 1px solid var(--border);
+    }
+    .card-badges {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .internship-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .company-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--purple);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-meta-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .meta-item strong {
+      color: var(--text-main);
+    }
+
+    .card-skills {
+      margin-bottom: 18px;
+    }
+    .card-skills-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-subtle);
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    .card-skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    /* Match percentage indicator (For recommendations) */
+    .match-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+    }
+    .match-percent {
+      font-weight: 800;
+      color: #16a34a;
+    }
+    .match-reasons {
+      font-size: 11.5px;
+      color: #15803d;
+      margin-top: 3px;
+    }
+
+    .card-footer {
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .btn-bookmark {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .btn-bookmark:hover {
+      background: var(--bg-card-alt);
+      color: var(--warning);
+      border-color: #cbd5e1;
+    }
+    .btn-bookmark.active {
+      background: var(--warning-light);
+      color: var(--warning);
+      border-color: #fde68a;
+    }
+
+    /* ==========================================================================
+       7. VIEW: EXPLORE INTERNSHIPS (Filters & Search)
+       ========================================================================== */
+    .filter-panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-row-top {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+    .search-input-wrap input {
+      width: 100%;
+      padding-left: 38px;
+    }
+    .search-icon-pos {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .filter-row-bottom {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      align-items: center;
+    }
+    .filter-group label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .filter-group select {
+      width: 100%;
+    }
+
+    .filter-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .filter-status-bar strong {
+      color: var(--text-main);
+    }
+
+    /* Empty state */
+    .empty-state {
+      background: #ffffff;
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--text-muted);
+    }
+    .empty-state-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .empty-state p {
+      max-width: 440px;
+      margin: 0 auto 18px auto;
+      font-size: 14px;
+    }
+
+    /* ==========================================================================
+       8. VIEW: APPLICATION TRACKER
+       ========================================================================== */
+    .applications-table-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      box-shadow: var(--shadow-sm);
+    }
+    .app-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    .app-table th {
+      background: var(--bg-card-alt);
+      padding: 14px 18px;
+      font-weight: 700;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .app-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .app-table tr:last-child td {
+      border-bottom: none;
+    }
+    .app-table tr:hover td {
+      background-color: #fafbfc;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .status-applied { background: #e0f2fe; color: #0284c7; }
+    .status-under-review { background: #fef3c7; color: #d97706; }
+    .status-shortlisted { background: #dcfce7; color: #16a34a; }
+    .status-interview { background: #f3e8ff; color: #7e22ce; }
+    .status-rejected { background: #fee2e2; color: #dc2626; }
+
+    /* ==========================================================================
+       9. VIEW: STUDENT PROFILE
+       ========================================================================== */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+    }
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 18px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .form-section-title:first-child {
+      margin-top: 0;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+    }
+    .form-helper {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Skills selector */
+    .skills-picker-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .skill-toggle-btn {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .skill-toggle-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .skill-toggle-btn.selected {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    /* ==========================================================================
+       10. VIEW: CAMPUS BUDDY CHATBOT (Full-View & Floating Widget)
+       ========================================================================== */
+    .chatbot-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      height: 640px;
+      overflow: hidden;
+    }
+    .chatbot-header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chatbot-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chatbot-avatar {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+    .chatbot-header-info h3 {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .chatbot-header-info span {
+      font-size: 11.5px;
+      opacity: 0.9;
+    }
+
+    /* Chat Messages Body */
+    .chat-messages-area {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #fafbfc;
+    }
+
+    .chat-bubble-wrap {
+      display: flex;
+      gap: 10px;
+      max-width: 82%;
+    }
+    .chat-bubble-wrap.user {
+      align-self: flex-end;
+      flex-direction: row-reverse;
+    }
+    .chat-bubble-wrap.bot {
+      align-self: flex-start;
+    }
+
+    .bubble-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .bubble-avatar.bot {
+      background: var(--purple-light);
+      color: var(--purple);
+      border: 1px solid #ddd6fe;
+    }
+    .bubble-avatar.user {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .chat-bubble {
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+      position: relative;
+    }
+    .chat-bubble.bot {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    .chat-bubble.user {
+      background: var(--primary);
+      color: #ffffff;
+      border-top-right-radius: 4px;
+    }
+    .chat-bubble-time {
+      font-size: 10.5px;
+      margin-top: 4px;
+      opacity: 0.7;
+      text-align: right;
+    }
+
+    .chat-bubble strong {
+      color: inherit;
+    }
+    .chat-bubble ul {
+      padding-left: 20px;
+      margin: 6px 0;
+    }
+    .chat-bubble li {
+      margin-bottom: 4px;
+    }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      padding: 10px 14px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: fit-content;
+      border-top-left-radius: 4px;
+    }
+    .typing-indicator span {
+      width: 7px;
+      height: 7px;
+      background: var(--purple);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite ease-in-out;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+    }
+
+    /* Suggested questions shelf */
+    .chat-suggestions-shelf {
+      padding: 10px 18px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .chat-suggestions-shelf::-webkit-scrollbar {
+      height: 4px;
+    }
+    .chat-suggestions-shelf::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 99px;
+    }
+    .chat-suggestion-chip {
+      background: var(--bg-card-alt);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      padding: 5px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .chat-suggestion-chip:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    /* Input area */
+    .chat-input-bar {
+      padding: 14px 18px;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+    .chat-input-bar input {
+      flex: 1;
+      border-radius: var(--radius-full);
+      padding: 10px 18px;
+    }
+    .chat-input-bar button {
+      border-radius: var(--radius-full);
+      padding: 10px 20px;
+    }
+
+    /* Floating Widget Bottom-Right */
+    .floating-chat-trigger {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%);
+      color: #ffffff;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      z-index: 999;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .floating-chat-trigger:hover {
+      transform: scale(1.08) translateY(-2px);
+      box-shadow: 0 12px 25px rgba(79, 70, 229, 0.5);
+    }
+    .floating-chat-popup {
+      display: none;
+      position: fixed;
+      bottom: 92px;
+      right: 24px;
+      width: 380px;
+      height: 540px;
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+      z-index: 1000;
+      flex-direction: column;
+      overflow: hidden;
+      animation: popUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .floating-chat-popup.open {
+      display: flex;
+    }
+    @keyframes popUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ==========================================================================
+       11. MODAL DIALOGS (Apply Modal & Details Modal)
+       ========================================================================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.open {
+      display: flex;
+    }
+    .modal-content {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: popUp 0.25s ease;
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      z-index: 2;
+    }
+    .modal-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .modal-close-btn {
+      background: transparent;
+      font-size: 22px;
+      color: var(--text-muted);
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-close-btn:hover {
+      color: var(--danger);
+    }
+    .modal-body {
+      padding: 24px;
+    }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: var(--bg-card-alt);
+    }
+
+    /* Toast Notification Alert */
+    .toast-notification {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #1e293b;
+      color: #ffffff;
+      padding: 12px 22px;
+      border-radius: var(--radius-full);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 3000;
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .toast-notification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    footer {
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+      margin-top: auto;
+      font-size: 13.5px;
+      color: var(--text-muted);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ==========================================================================
+       12. RESPONSIVE MEDIA QUERIES (Mobile & Tablet)
+       ========================================================================== */
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-layout, .profile-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links, .nav-actions .btn-chat-nav {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 26px;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .internships-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      .filter-row-top {
+        flex-direction: column;
+      }
+      .floating-chat-popup {
+        width: calc(100vw - 32px);
+        right: 16px;
+        bottom: 84px;
+        height: 75vh;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP NAVIGATION BAR
+       ========================================================================== -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="javascript:void(0)" class="brand-logo" onclick="app.switchView('home')">
+        <div class="brand-icon">&#127891;</div>
+        <div class="brand-text">
+          <h1>InternConnect</h1>
+          <span>+ Campus Buddy &#129302;</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <ul class="nav-links">
+        <li><a class="nav-link active" data-view="home" onclick="app.switchView('home')">&#127968; Home</a></li>
+        <li><a class="nav-link" data-view="explore" onclick="app.switchView('explore')">&#128269; Explore</a></li>
+        <li><a class="nav-link" data-view="recommended" onclick="app.switchView('recommended')">&#127919; Recommended</a></li>
+        <li>
+          <a class="nav-link" data-view="saved" onclick="app.switchView('saved')">
+            &#128278; Saved <span class="nav-counter" id="navSavedCount">0</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-link" data-view="applications" onclick="app.switchView('applications')">
+            &#128203; Applications <span class="nav-counter" id="navAppliedCount">0</span>
+          </a>
+        </li>
+        <li><a class="nav-link" data-view="profile" onclick="app.switchView('profile')">&#128100; My Profile</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn btn-chat-nav" onclick="app.switchView('chatbot')">
+          &#128172; Campus Buddy
+        </button>
+        <button class="mobile-menu-btn" onclick="app.toggleMobileNav()" aria-label="Toggle Navigation">
+          &#9776;
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a class="nav-link active" data-view="home" onclick="app.switchView('home'); app.toggleMobileNav();">&#127968; Home</a>
+      <a class="nav-link" data-view="explore" onclick="app.switchView('explore'); app.toggleMobileNav();">&#128269; Explore Internships</a>
+      <a class="nav-link" data-view="recommended" onclick="app.switchView('recommended'); app.toggleMobileNav();">&#127919; Personalized Matches</a>
+      <a class="nav-link" data-view="saved" onclick="app.switchView('saved'); app.toggleMobileNav();">&#128278; Saved Internships (<span id="mobileNavSavedCount">0</span>)</a>
+      <a class="nav-link" data-view="applications" onclick="app.switchView('applications'); app.toggleMobileNav();">&#128203; My Applications (<span id="mobileNavAppliedCount">0</span>)</a>
+      <a class="nav-link" data-view="profile" onclick="app.switchView('profile'); app.toggleMobileNav();">&#128100; My Profile</a>
+      <a class="nav-link" data-view="chatbot" onclick="app.switchView('chatbot'); app.toggleMobileNav();">&#128172; Campus Buddy Chatbot</a>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       MAIN CONTENT ROUTER (Views switched via JavaScript without page reload)
+       ========================================================================== -->
+  <main class="container">
+
+    <!-- Global Demonstration Disclaimer -->
+    <div class="demo-notice-bar">
+      <span class="icon">&#8505;&#65039;</span>
+      <div>
+        <strong>College Project Demo:</strong> All internship listings and company profiles are realistic sample records created for college project demonstration and beginner study. Local data persists safely in your browser via <code>localStorage</code>.
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         VIEW 1: HOME / DASHBOARD
+         ======================================================================== -->
+    <section id="view-home" class="app-view active">
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-greeting">
+            <span>&#128075;</span> <span id="heroStudentGreeting">Welcome, First-Year Explorer!</span>
+          </div>
+          <h2 class="hero-title">Discover Your First College Internship Opportunity</h2>
+          <p class="hero-subtitle">
+            InternConnect connects college students with hands-on internships matching your skills, degree, and career interests. Have questions? Ask our integrated <strong>Campus Buddy</strong> chatbot anytime!
+          </p>
+
+          <!-- Quick Search -->
+          <div class="hero-search-box">
+            <input type="text" id="heroSearchInput" placeholder="Search internships by role, company, or skill (e.g. Web, Python, UI/UX)..." onkeydown="if(event.key==='Enter') app.quickSearchFromHero()">
+            <button class="btn btn-primary" onclick="app.quickSearchFromHero()">Explore Internships</button>
+          </div>
+
+          <!-- Quick Tags -->
+          <div class="hero-quick-tags">
+            <span>Popular:</span>
+            <span class="hero-tag-pill" onclick="app.filterByTag('Web Development')">&#127760; Web Dev</span>
+            <span class="hero-tag-pill" onclick="app.filterByTag('Python')">&#128013; Python</span>
+            <span class="hero-tag-pill" onclick="app.filterByTag('UI/UX Design')">&#127912; UI/UX</span>
+            <span class="hero-tag-pill" onclick="app.filterByTag('Remote')">&#127969; Remote Only</span>
+            <span class="hero-tag-pill" onclick="app.filterByTag('Data Science & AI')">&#128202; Data &amp; AI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon indigo">&#128188;</div>
+          <div class="stat-details">
+            <h3 id="statTotalInternships">12</h3>
+            <p>Available Internships</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">&#127919;</div>
+          <div class="stat-details">
+            <h3 id="statRecommendedCount">5</h3>
+            <p>Profile Matches</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">&#128278;</div>
+          <div class="stat-details">
+            <h3 id="statSavedCount">0</h3>
+            <p>Saved Bookmarks</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">&#128228;</div>
+          <div class="stat-details">
+            <h3 id="statAppliedCount">0</h3>
+            <p>Active Applications</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Column Dashboard Layout -->
+      <div class="dashboard-layout">
+        <!-- Left: Featured Opportunities -->
+        <div>
+          <div class="card-panel">
+            <div class="card-panel-header">
+              <h3>&#11088; Featured Internship Opportunities</h3>
+              <button class="btn btn-sm btn-outline-primary" onclick="app.switchView('explore')">View All (12) &rarr;</button>
+            </div>
+            <div id="homeFeaturedGrid" class="internships-grid">
+              <!-- Dynamically rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Profile Card & Campus Buddy Teaser -->
+        <div>
+          <!-- Profile Snapshot Card -->
+          <div class="card-panel">
+            <div class="card-panel-header">
+              <h3>&#128100; Student Profile Snapshot</h3>
+              <button class="btn btn-sm btn-secondary" onclick="app.switchView('profile')">Edit</button>
+            </div>
+            <div class="profile-widget-content">
+              <div class="profile-avatar-placeholder" id="homeAvatarInitials">AJ</div>
+              <div class="profile-meta">
+                <h4 id="homeProfileName">Alex Johnson</h4>
+                <p id="homeProfileDegree">B.Tech - 1st Year (CSE)</p>
+                <div class="badge badge-primary" id="homeProfileCollege">National Institute of Tech</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+              <div class="card-skills-label">Active Skills:</div>
+              <div class="profile-skills-pills" id="homeProfileSkills">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <div class="profile-meter">
+              <div class="meter-labels">
+                <span>Profile Completion</span>
+                <span id="homeProfilePercent">85%</span>
+              </div>
+              <div class="meter-bar">
+                <div class="meter-fill" id="homeProfileMeterBar" style="width: 85%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campus Buddy Teaser -->
+          <div class="buddy-teaser-card">
+            <div class="teaser-top">
+              <div class="teaser-bot-icon">&#129302;</div>
+              <div>
+                <h4>Ask Campus Buddy</h4>
+                <p style="margin-bottom: 0;">Your 24/7 college mentor &amp; coding helper</p>
+              </div>
+            </div>
+            <p>Stuck on resumes, project topics, or GitHub commands? Click any common question to ask:</p>
+            <div class="teaser-prompts">
+              <button class="teaser-prompt-btn" onclick="app.askBuddyQuestion('Suggest a college project.')">
+                <span>&#128161; Suggest a college project</span>
+                <span>&rarr;</span>
+              </button>
+              <button class="teaser-prompt-btn" onclick="app.askBuddyQuestion('What is a hackathon?')">
+                <span>&#127942; What is a hackathon?</span>
+                <span>&rarr;</span>
+              </button>
+              <button class="teaser-prompt-btn" onclick="app.askBuddyQuestion('How do I find internships?')">
+                <span>&#128188; How do I find internships?</span>
+                <span>&rarr;</span>
+              </button>
+              <button class="teaser-prompt-btn" onclick="app.askBuddyQuestion('What is GitHub?')">
+                <span>&#128025; What is GitHub?</span>
+                <span>&rarr;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 2: EXPLORE INTERNSHIPS
+         ======================================================================== -->
+    <section id="view-explore" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">Discover Vacancies</div>
+        <h2>Explore Internship Opportunities</h2>
+        <p>Filter by domain, required programming skills, work mode, location, and stipend.</p>
+      </div>
+
+      <!-- Search & Multi-Filter Panel -->
+      <div class="filter-panel">
+        <div class="filter-row-top">
+          <div class="search-input-wrap">
+            <span class="search-icon-pos">&#128269;</span>
+            <input type="text" id="exploreSearchInput" placeholder="Search by title, company name, skill, or keyword..." oninput="app.applyFilters()">
+          </div>
+          <button class="btn btn-secondary" onclick="app.resetFilters()">Clear All Filters</button>
+        </div>
+
+        <div class="filter-row-bottom">
+          <div class="filter-group">
+            <label for="filterCategory">Category</label>
+            <select id="filterCategory" onchange="app.applyFilters()">
+              <option value="all">All Domains</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Data Science & AI">Data Science &amp; AI</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Cloud & DevOps">Cloud &amp; DevOps</option>
+              <option value="Mobile App Dev">Mobile App Dev</option>
+              <option value="Cybersecurity">Cybersecurity</option>
+              <option value="Digital Marketing">Digital Marketing</option>
+              <option value="Software Testing">Software Testing</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterSkill">Required Skill</label>
+            <select id="filterSkill" onchange="app.applyFilters()">
+              <option value="all">All Skills</option>
+              <option value="HTML">HTML / CSS</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Python">Python</option>
+              <option value="React">React</option>
+              <option value="SQL">SQL</option>
+              <option value="Figma">Figma</option>
+              <option value="Git">Git</option>
+              <option value="Java">Java</option>
+              <option value="Linux">Linux</option>
+              <option value="Flutter">Flutter</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterMode">Work Mode</label>
+            <select id="filterMode" onchange="app.applyFilters()">
+              <option value="all">All Modes</option>
+              <option value="Remote">Remote Only</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="Onsite">Onsite</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterLocation">Location</label>
+            <select id="filterLocation" onchange="app.applyFilters()">
+              <option value="all">All Locations</option>
+              <option value="Remote">Remote</option>
+              <option value="Bangalore">Bangalore</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Pune">Pune</option>
+              <option value="Mumbai">Mumbai</option>
+              <option value="Delhi-NCR">Delhi-NCR</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterSort">Sort By</label>
+            <select id="filterSort" onchange="app.applyFilters()">
+              <option value="relevance">Relevance</option>
+              <option value="stipendDesc">Stipend: High to Low</option>
+              <option value="deadline">Application Deadline</option>
+              <option value="titleAsc">Title: A to Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Result Bar -->
+      <div class="filter-status-bar">
+        <div>
+          Showing <strong id="exploreCountText">12</strong> internships
+        </div>
+      </div>
+
+      <!-- Internships Grid Container -->
+      <div id="exploreInternshipsGrid" class="internships-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="exploreEmptyState" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">&#128269;</div>
+        <h3>No Internships Match Your Filters</h3>
+        <p>Try clearing some filters or searching for broader keywords like "Web", "Python", or "Remote".</p>
+        <button class="btn btn-primary" onclick="app.resetFilters()">Reset All Filters</button>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 3: PERSONALIZED RECOMMENDATIONS
+         ======================================================================== -->
+    <section id="view-recommended" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">Smart Matching Algorithm</div>
+        <h2>Personalized For Your Profile</h2>
+        <p>
+          Calculated by comparing your degree, known programming skills, preferred mode, and location with internship requirements.
+        </p>
+      </div>
+
+      <!-- Preference Matching Summary Bar -->
+      <div class="card-panel" style="margin-bottom: 24px; background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);">
+        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+          <div>
+            <h4 style="font-size: 15px; font-weight: 700; color: var(--text-main);">Matching Criteria Active:</h4>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;" id="recommendationCriteriaSummary">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+          <button class="btn btn-sm btn-outline-primary" onclick="app.switchView('profile')">Update Profile Preferences &#9881;&#65039;</button>
+        </div>
+      </div>
+
+      <!-- Recommendation Cards Grid -->
+      <div id="recommendedInternshipsGrid" class="internships-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 4: SAVED INTERNSHIPS
+         ======================================================================== -->
+    <section id="view-saved" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">Bookmarks</div>
+        <h2>Saved Internships</h2>
+        <p>Keep track of opportunities you want to research or apply for before the deadline.</p>
+      </div>
+
+      <!-- Saved Grid -->
+      <div id="savedInternshipsGrid" class="internships-grid">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Saved Empty State -->
+      <div id="savedEmptyState" class="empty-state" style="display: none;">
+        <div class="empty-state-icon">&#128278;</div>
+        <h3>No Saved Internships Yet</h3>
+        <p>When browsing internships, click the bookmark icon on any card to save it to this collection.</p>
+        <button class="btn btn-primary" onclick="app.switchView('explore')">Browse Opportunities</button>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 5: APPLICATION TRACKER
+         ======================================================================== -->
+    <section id="view-applications" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">Status Pipeline</div>
+        <h2>Application Tracker</h2>
+        <p>Monitor your active submissions, review statuses, and interview stages in real time.</p>
+      </div>
+
+      <!-- Application Metrics -->
+      <div class="stats-grid" style="margin-bottom: 24px;">
+        <div class="stat-card">
+          <div class="stat-icon indigo">&#128221;</div>
+          <div class="stat-details">
+            <h3 id="appStatusTotal">0</h3>
+            <p>Total Submitted</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon amber">&#8987;</div>
+          <div class="stat-details">
+            <h3 id="appStatusUnderReview">0</h3>
+            <p>Under Review</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">&#127881;</div>
+          <div class="stat-details">
+            <h3 id="appStatusShortlisted">0</h3>
+            <p>Shortlisted</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple">&#127919;</div>
+          <div class="stat-details">
+            <h3 id="appStatusInterview">0</h3>
+            <p>Interview / Offers</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Wrapper -->
+      <div class="applications-table-wrapper" id="appsTableContainer">
+        <table class="app-table">
+          <thead>
+            <tr>
+              <th>Role &amp; Company</th>
+              <th>Date Applied</th>
+              <th>Mode / Location</th>
+              <th>Status</th>
+              <th>Simulate Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="applicationsTableBody">
+            <!-- Dynamically Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Applications Empty State -->
+      <div id="appsEmptyState" class="empty-state" style="display: none; margin-top: 20px;">
+        <div class="empty-state-icon">&#128203;</div>
+        <h3>No Applications Submitted Yet</h3>
+        <p>You haven't applied for any internships yet. Explore listings and click "Apply Now" to start your journey!</p>
+        <button class="btn btn-primary" onclick="app.switchView('explore')">Find Internships to Apply</button>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 6: STUDENT PROFILE
+         ======================================================================== -->
+    <section id="view-profile" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">Personal Information &amp; Preferences</div>
+        <h2>My Student Profile</h2>
+        <p>Keep your profile up to date to receive highly accurate internship recommendations and speed up applications.</p>
+      </div>
+
+      <div class="profile-grid">
+        <!-- Main Form -->
+        <div class="card-panel">
+          <form id="studentProfileForm" onsubmit="app.handleProfileSave(event)">
+            <div class="form-section-title">&#127891; Academic &amp; Personal Details</div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profName">Full Name *</label>
+                <input type="text" id="profName" required placeholder="e.g. Alex Johnson">
+              </div>
+              <div class="form-group">
+                <label for="profEmail">Email Address *</label>
+                <input type="email" id="profEmail" required placeholder="e.g. alex.johnson@college.edu">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profCollege">College / Institute *</label>
+                <input type="text" id="profCollege" required placeholder="e.g. National Institute of Tech">
+              </div>
+              <div class="form-group">
+                <label for="profPhone">Contact Number</label>
+                <input type="tel" id="profPhone" placeholder="e.g. +91 98765 43210">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profDegree">Degree &amp; Branch *</label>
+                <select id="profDegree" required>
+                  <option value="B.Tech (Computer Science & Engg)">B.Tech (Computer Science &amp; Engg)</option>
+                  <option value="B.Tech (Information Technology)">B.Tech (Information Technology)</option>
+                  <option value="B.Tech (Electronics & Comm)">B.Tech (Electronics &amp; Comm)</option>
+                  <option value="BCA (Computer Applications)">BCA (Computer Applications)</option>
+                  <option value="B.Sc (Computer Science / IT)">B.Sc (Computer Science / IT)</option>
+                  <option value="MCA (Master of Computer Apps)">MCA (Master of Computer Apps)</option>
+                  <option value="Other / Non-Engineering">Other / Non-Engineering</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="profYear">Academic Year *</label>
+                <select id="profYear" required>
+                  <option value="1st Year (Freshman)">1st Year (Freshman)</option>
+                  <option value="2nd Year (Sophomore)">2nd Year (Sophomore)</option>
+                  <option value="3rd Year (Junior)">3rd Year (Junior)</option>
+                  <option value="4th Year (Senior)">4th Year (Senior)</option>
+                  <option value="Postgraduate">Postgraduate</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-section-title">&#128187; Technical Skills &amp; Preferences</div>
+
+            <div class="form-group">
+              <label>Select Your Known Skills (Click to toggle):</label>
+              <div class="skills-picker-tags" id="profileSkillsPicker">
+                <!-- Dynamically populated skill toggles -->
+              </div>
+              <div class="form-helper">These skills are directly used to calculate your internship match scores!</div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profPreferredMode">Preferred Work Mode</label>
+                <select id="profPreferredMode">
+                  <option value="Any">Any Mode</option>
+                  <option value="Remote">Remote Only</option>
+                  <option value="Hybrid">Hybrid</option>
+                  <option value="Onsite">Onsite</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="profPreferredLocation">Preferred Location</label>
+                <select id="profPreferredLocation">
+                  <option value="Any">Open to Any Location</option>
+                  <option value="Bangalore">Bangalore</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Pune">Pune</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Delhi-NCR">Delhi-NCR</option>
+                  <option value="Remote">Remote Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="profBio">Bio &amp; Career Objective</label>
+              <textarea id="profBio" rows="3" placeholder="Passionate first-year college student learning web development and algorithmic problem solving. Seeking an internship to build real-world software..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="profGithub">GitHub Profile URL</label>
+                <input type="url" id="profGithub" placeholder="https://github.com/your-username">
+              </div>
+              <div class="form-group">
+                <label for="profLinkedin">LinkedIn Profile URL</label>
+                <input type="url" id="profLinkedin" placeholder="https://linkedin.com/in/your-profile">
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 20px;">
+              <button type="submit" class="btn btn-primary">&#128190; Save Profile &amp; Update Matches</button>
+              <button type="button" class="btn btn-secondary" onclick="app.loadSampleProfile()">&#128259; Load Sample Profile</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Profile Side Summary & Controls -->
+        <div>
+          <div class="card-panel">
+            <h3 style="font-size: 17px; margin-bottom: 12px;">Profile Strength</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">
+              A complete profile helps you unlock personalized recommendations and makes your applications stand out!
+            </p>
+            <div class="meter-bar" style="height: 10px; margin-bottom: 8px;">
+              <div class="meter-fill" id="profileStrengthMeter" style="width: 85%;"></div>
+            </div>
+            <div style="font-size: 12px; font-weight: 700; color: var(--primary);" id="profileStrengthText">
+              85% - Looking Strong!
+            </div>
+          </div>
+
+          <div class="card-panel">
+            <h3 style="font-size: 17px; margin-bottom: 12px;">Demo Data Management</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">
+              Data is stored safely in your browser's local storage. You can restore fresh factory demo settings at any time.
+            </p>
+            <button class="btn btn-danger btn-sm" onclick="app.resetAllDemoData()">
+              &#128465;&#65039; Reset All Demo Data &amp; Storage
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         VIEW 7: DEDICATED CAMPUS BUDDY CHATBOT
+         ======================================================================== -->
+    <section id="view-chatbot" class="app-view">
+      <div class="section-header">
+        <div class="eyebrow">College &amp; Career Assistant</div>
+        <h2>Chat with Campus Buddy</h2>
+        <p>Ask anything about finding internships, hackathons, Git &amp; GitHub, web development basics, and college project ideas!</p>
+      </div>
+
+      <div class="chatbot-card">
+        <div class="chatbot-header">
+          <div class="chatbot-header-left">
+            <div class="chatbot-avatar">&#129302;</div>
+            <div class="chatbot-header-info">
+              <h3>Campus Buddy</h3>
+              <span>&#9679; Online &bull; Offline Keyword Knowledge Base</span>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="app.clearChatMessages()">&#129529; Clear Chat</button>
+        </div>
+
+        <!-- Chat History Area -->
+        <div class="chat-messages-area" id="dedicatedChatMessages">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" id="dedicatedTypingIndicator">
+          <span></span><span></span><span></span>
+        </div>
+
+        <!-- Suggested Question Pills -->
+        <div class="chat-suggestions-shelf">
+          <span style="font-size: 11.5px; font-weight: 700; color: var(--text-muted); padding-left: 4px;">Suggestions:</span>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('How do I find internships?', 'dedicated')">&#128188; How do I find internships?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is a hackathon?', 'dedicated')">&#127942; What is a hackathon?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is GitHub?', 'dedicated')">&#128025; What is GitHub?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('Suggest a college project.', 'dedicated')">&#128161; Suggest a college project</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is HTML?', 'dedicated')">&#127760; What is HTML?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is CSS?', 'dedicated')">&#127912; What is CSS?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is JavaScript?', 'dedicated')">&#9889; What is JavaScript?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('How can I prepare my resume?', 'dedicated')">&#128196; How can I prepare my resume?</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('How to prepare for an interview?', 'dedicated')">&#127908; Interview tips</button>
+          <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('Roadmap for 1st year students', 'dedicated')">&#128506;&#65039; 1st year roadmap</button>
+        </div>
+
+        <!-- Chat Input Bar -->
+        <div class="chat-input-bar">
+          <input type="text" id="dedicatedChatInput" placeholder="Type your college or tech question here..." onkeydown="if(event.key==='Enter') app.sendDedicatedChat()">
+          <button class="btn btn-primary" onclick="app.sendDedicatedChat()">Send &#128640;</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FLOATING CAMPUS BUDDY WIDGET (Accessible from any view!)
+       ========================================================================== -->
+  <div class="floating-chat-trigger" onclick="app.toggleFloatingChat()" title="Chat with Campus Buddy" aria-label="Open Campus Buddy Chatbot">
+    &#129302;
+  </div>
+
+  <div class="floating-chat-popup" id="floatingChatPopup">
+    <div class="chatbot-header">
+      <div class="chatbot-header-left">
+        <div class="chatbot-avatar">&#129302;</div>
+        <div class="chatbot-header-info">
+          <h3>Campus Buddy</h3>
+          <span>&#9679; Online Helper</span>
+        </div>
+      </div>
+      <button class="modal-close-btn" style="color: #fff;" onclick="app.toggleFloatingChat()">&#10005;</button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chat-messages-area" id="floatingChatMessages">
+      <!-- Populated by JS -->
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="floatingTypingIndicator">
+      <span></span><span></span><span></span>
+    </div>
+
+    <!-- Suggestions in Floating widget -->
+    <div class="chat-suggestions-shelf">
+      <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('Suggest a college project.', 'floating')">&#128161; Project Idea</button>
+      <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is GitHub?', 'floating')">&#128025; GitHub</button>
+      <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('What is a hackathon?', 'floating')">&#127942; Hackathons</button>
+      <button class="chat-suggestion-chip" onclick="app.handleUserMessageInput('How do I find internships?', 'floating')">&#128188; Internships</button>
+    </div>
+
+    <div class="chat-input-bar">
+      <input type="text" id="floatingChatInput" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') app.sendFloatingChat()">
+      <button class="btn btn-primary btn-sm" onclick="app.sendFloatingChat()">Send</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 1: INTERNSHIP APPLICATION FORM
+       ========================================================================== -->
+  <div class="modal-overlay" id="applyModalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3>Submit Internship Application</h3>
+          <p style="font-size: 13px; color: var(--purple); font-weight: 600;" id="applyModalSubtitle">
+            Frontend Web Developer Intern &bull; TechNova Solutions
+          </p>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeApplyModal()">&#10005;</button>
+      </div>
+
+      <form id="internshipApplyForm" onsubmit="app.submitApplicationForm(event)">
+        <div class="modal-body">
+          <input type="hidden" id="applyInternshipId">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="applyFullName">Full Name *</label>
+              <input type="text" id="applyFullName" required placeholder="Alex Johnson">
+            </div>
+            <div class="form-group">
+              <label for="applyEmail">Email Address *</label>
+              <input type="email" id="applyEmail" required placeholder="alex@college.edu">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="applyPhone">Phone Number *</label>
+              <input type="tel" id="applyPhone" required placeholder="+91 98765 43210">
+            </div>
+            <div class="form-group">
+              <label for="applyCollege">College / University *</label>
+              <input type="text" id="applyCollege" required placeholder="National Institute of Tech">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="applyCoverLetter">Short Introduction &amp; Why You're Interested *</label>
+            <textarea id="applyCoverLetter" rows="4" required minlength="20" placeholder="Introduce yourself, mention relevant projects you've built, and why you want to intern at this company (minimum 20 characters)..."></textarea>
+            <div class="form-helper">Keep it concise, enthusiastic, and mention your hands-on coding work!</div>
+          </div>
+
+          <div class="form-group">
+            <label for="applyResumeName">Simulated Resume Attachment</label>
+            <input type="text" id="applyResumeName" value="Alex_Johnson_Resume_2026.pdf" readonly style="background: var(--bg-card-alt); cursor: not-allowed;">
+            <div class="form-helper">In this demo frontend, your profile info acts as your digital resume.</div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <label style="display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; color: var(--text-muted); cursor: pointer;">
+              <input type="checkbox" required style="margin-top: 3px;">
+              <span>I verify that all information provided is accurate and I am ready to participate in technical assessments.</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="app.closeApplyModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Application &#128640;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL 2: INTERNSHIP FULL DETAILS VIEW
+       ========================================================================== -->
+  <div class="modal-overlay" id="detailsModalOverlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 id="detailsModalTitle">Internship Details</h3>
+          <p style="font-size: 13px; color: var(--purple); font-weight: 600;" id="detailsModalCompany">
+            Company Name
+          </p>
+        </div>
+        <button class="modal-close-btn" onclick="app.closeDetailsModal()">&#10005;</button>
+      </div>
+
+      <div class="modal-body" id="detailsModalBody">
+        <!-- Rendered by JS -->
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="app.closeDetailsModal()">Close</button>
+        <button type="button" class="btn btn-primary" id="detailsModalApplyBtn">Apply Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div class="toast-notification" id="toast">
+    <span id="toastIcon">&#9989;</span>
+    <span id="toastMessage">Action completed successfully!</span>
+  </div>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <strong style="color: var(--text-main);">InternConnect + Campus Buddy</strong> - Built for First-Year College Students &amp; Beginners.
+        <div style="font-size: 12px; margin-top: 4px;">
+          Developed with pure HTML5, CSS3, and Vanilla JavaScript. No external dependencies or backend required.
+        </div>
+      </div>
+      <div style="display: flex; gap: 14px;">
+        <a href="javascript:void(0)" onclick="app.switchView('home')">Home</a>
+        <a href="javascript:void(0)" onclick="app.switchView('explore')">Explore</a>
+        <a href="javascript:void(0)" onclick="app.switchView('chatbot')">Campus Buddy</a>
+        <a href="javascript:void(0)" onclick="app.resetAllDemoData()">Reset Demo</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       13. JAVASCRIPT APPLICATION CODE (Vanilla JS, Clean & Beginner-Friendly)
+       ========================================================================== -->
+  <script>
+    /**
+     * ==========================================================================
+     * InternConnect & Campus Buddy - Application Logic
+     * ==========================================================================
+     * Written in beginner-friendly, clean, vanilla JavaScript.
+     * All data is stored in memory and synchronized with localStorage.
+     */
+
+    // Master dataset of sample internship listings
+    const INITIAL_INTERNSHIPS = [
+      {
+        id: "int-101",
+        title: "Frontend Web Developer Intern",
+        company: "TechNova Solutions",
+        category: "Web Development",
+        skills: ["HTML", "CSS", "JavaScript", "Git"],
+        courses: "B.Tech (CSE/IT), BCA, B.Sc CS",
+        location: "Bangalore",
+        mode: "Remote",
+        stipend: "\u20B918,000 / month",
+        stipendNum: 18000,
+        duration: "3 Months",
+        deadline: "2026-11-20",
+        featured: true,
+        description: "Join our agile engineering team to build modern web interfaces, optimize page load speed, and implement interactive frontend features using clean vanilla JavaScript and semantic HTML5.",
+        perks: "Certificate of Internship, Letter of Recommendation, Flexible Hours, Mentorship from Senior Engineers"
+      },
+      {
+        id: "int-102",
+        title: "Python & Data Analytics Trainee",
+        company: "DataSphere Analytics",
+        category: "Data Science & AI",
+        skills: ["Python", "SQL", "Excel", "Pandas"],
+        courses: "B.Tech, BCA, B.Sc (Math/Stats/CS)",
+        location: "Hyderabad",
+        mode: "Hybrid",
+        stipend: "\u20B920,000 / month",
+        stipendNum: 20000,
+        duration: "6 Months",
+        deadline: "2026-11-28",
+        featured: true,
+        description: "Analyze large dataset pipelines, clean messy incoming records, build automated report generators using Python, and visualize actionable business metrics.",
+        perks: "Full-Time Pre-Placement Offer (PPO) potential, Daily Canteen Meals, Hands-on Big Data Training"
+      },
+      {
+        id: "int-103",
+        title: "UI/UX Design Intern",
+        company: "PixelCraft Studios",
+        category: "UI/UX Design",
+        skills: ["Figma", "Wireframing", "UI Design", "Prototyping"],
+        courses: "Any Degree / Design Enthusiast",
+        location: "Pune",
+        mode: "Remote",
+        stipend: "\u20B915,000 / month",
+        stipendNum: 15000,
+        duration: "3 Months",
+        deadline: "2026-12-05",
+        featured: true,
+        description: "Design intuitive user journeys, wireframes, and design systems for mobile and web applications. Conduct quick user testing interviews and refine component libraries in Figma.",
+        perks: "Design Mentorship, Portfolio Case Study Review, Work from Anywhere"
+      },
+      {
+        id: "int-104",
+        title: "Junior Full Stack Trainee",
+        company: "CodeCraft Labs",
+        category: "Web Development",
+        skills: ["JavaScript", "HTML", "CSS", "React", "Node.js"],
+        courses: "B.Tech (CSE/IT), MCA",
+        location: "Mumbai",
+        mode: "Onsite",
+        stipend: "\u20B922,000 / month",
+        stipendNum: 22000,
+        duration: "6 Months",
+        deadline: "2026-11-25",
+        featured: false,
+        description: "Collaborate on end-to-end full stack web modules. Write REST APIs, construct reusable frontend widgets, and write clean integration tests.",
+        perks: "Work on live enterprise clients, Laptop provided, Free Snacks & Coffee"
+      },
+      {
+        id: "int-105",
+        title: "Cloud & DevOps Apprentice",
+        company: "CloudWave Systems",
+        category: "Cloud & DevOps",
+        skills: ["Linux", "Git", "Docker", "Cloud Basics"],
+        courses: "B.Tech (CSE/ECE/IT)",
+        location: "Bangalore",
+        mode: "Hybrid",
+        stipend: "\u20B925,000 / month",
+        stipendNum: 25000,
+        duration: "6 Months",
+        deadline: "2026-12-10",
+        featured: false,
+        description: "Learn continuous integration and deployment (CI/CD) pipelines, configure Linux servers, containerize applications with Docker, and monitor cloud health.",
+        perks: "AWS Certification Sponsorship, Hybrid Work Flexibility, Direct Mentorship"
+      },
+      {
+        id: "int-106",
+        title: "Mobile App Developer (Flutter) Intern",
+        company: "AppVenture Technologies",
+        category: "Mobile App Dev",
+        skills: ["Flutter", "Dart", "Git", "Mobile UI"],
+        courses: "B.Tech, BCA, MCA",
+        location: "Delhi-NCR",
+        mode: "Remote",
+        stipend: "\u20B916,000 / month",
+        stipendNum: 16000,
+        duration: "4 Months",
+        deadline: "2026-11-30",
+        featured: false,
+        description: "Build cross-platform Android and iOS applications using Flutter and Dart. Connect frontends to REST APIs and implement smooth responsive mobile user animations.",
+        perks: "Google Play Store deployment experience, Flexible scheduling around exams"
+      },
+      {
+        id: "int-107",
+        title: "Cybersecurity & Network Intern",
+        company: "CyberShield Labs",
+        category: "Cybersecurity",
+        skills: ["Networking", "Linux", "Python", "Security Fundamentals"],
+        courses: "B.Tech (CSE/IT/ECE)",
+        location: "Hyderabad",
+        mode: "Onsite",
+        stipend: "\u20B918,000 / month",
+        stipendNum: 18000,
+        duration: "3 Months",
+        deadline: "2026-12-15",
+        featured: false,
+        description: "Assist cybersecurity engineers in performing vulnerability audits, checking server logs for suspicious traffic, and implementing basic network protection policies.",
+        perks: "Hands-on experience with security tools, Security Certificate, Great PPO opportunity"
+      },
+      {
+        id: "int-108",
+        title: "Digital & Content Marketing Intern",
+        company: "BrandPulse Media",
+        category: "Digital Marketing",
+        skills: ["Content Writing", "SEO", "Social Media", "Canva"],
+        courses: "Any Graduate / BBA / BA / B.Tech",
+        location: "Mumbai",
+        mode: "Remote",
+        stipend: "\u20B912,000 / month",
+        stipendNum: 12000,
+        duration: "3 Months",
+        deadline: "2026-11-18",
+        featured: false,
+        description: "Craft engaging tech blog posts, write social media updates, assist with keyword SEO analysis, and design quick graphics using Canva.",
+        perks: "Creative freedom, Byline credits on major publications, Performance bonuses"
+      },
+      {
+        id: "int-109",
+        title: "Machine Learning Research Intern",
+        company: "NeuralNex AI",
+        category: "Data Science & AI",
+        skills: ["Python", "Machine Learning", "TensorFlow", "Math"],
+        courses: "B.Tech, M.Tech, M.Sc (CS/AI)",
+        location: "Bangalore",
+        mode: "Hybrid",
+        stipend: "\u20B928,000 / month",
+        stipendNum: 28000,
+        duration: "6 Months",
+        deadline: "2026-12-01",
+        featured: false,
+        description: "Implement baseline machine learning algorithms, train predictive models, clean computer vision training datasets, and contribute to research reports.",
+        perks: "Highest stipend tier, Co-authorship in research papers, AI GPU cluster access"
+      },
+      {
+        id: "int-110",
+        title: "QA & Software Testing Trainee",
+        company: "QualiTest Tech",
+        category: "Software Testing",
+        skills: ["Manual Testing", "Java", "Test Cases", "SQL"],
+        courses: "B.Tech, BCA, B.Sc CS",
+        location: "Pune",
+        mode: "Onsite",
+        stipend: "\u20B914,000 / month",
+        stipendNum: 14000,
+        duration: "3 Months",
+        deadline: "2026-11-22",
+        featured: false,
+        description: "Write comprehensive test cases, perform manual regression testing across web browsers, log bugs in bug tracking systems, and learn test automation basics.",
+        perks: "Comprehensive QA training from day one, Letter of recommendation, Fast-track PPO"
+      },
+      {
+        id: "int-111",
+        title: "Open Source & DevRel Intern",
+        company: "DevCommunity Org",
+        category: "Web Development",
+        skills: ["Git", "GitHub", "Technical Writing", "JavaScript"],
+        courses: "Any College Student",
+        location: "Remote",
+        mode: "Remote",
+        stipend: "\u20B915,000 / month",
+        stipendNum: 15000,
+        duration: "3 Months",
+        deadline: "2026-12-08",
+        featured: false,
+        description: "Contribute to open-source developer tool repositories, write starter tutorials for college developers, review community pull requests, and organize online workshops.",
+        perks: "Global developer network, Swag kit, High-visibility open-source profile boost"
+      },
+      {
+        id: "int-112",
+        title: "Backend Java & API Trainee",
+        company: "EnterpriseSys",
+        category: "Web Development",
+        skills: ["Java", "SQL", "Git", "REST APIs"],
+        courses: "B.Tech (CSE/IT), MCA",
+        location: "Delhi-NCR",
+        mode: "Hybrid",
+        stipend: "\u20B920,000 / month",
+        stipendNum: 20000,
+        duration: "6 Months",
+        deadline: "2026-11-26",
+        featured: false,
+        description: "Develop robust server-side business logic using Java. Construct clean REST API endpoints, write SQL database queries, and participate in code reviews.",
+        perks: "Real-world enterprise architecture experience, Great mentor support, Hybrid schedule"
+      }
+    ];
+
+    // Default student profile for first-year demonstration
+    const DEFAULT_PROFILE = {
+      name: "Alex Johnson",
+      email: "alex.johnson@college.edu",
+      phone: "+91 98765 43210",
+      college: "National Institute of Tech",
+      degree: "B.Tech (Computer Science & Engg)",
+      year: "1st Year (Freshman)",
+      skills: ["HTML", "CSS", "JavaScript", "Git", "Python"],
+      interests: ["Web Development", "Data Science & AI"],
+      preferredMode: "Remote",
+      preferredLocation: "Bangalore",
+      bio: "First-year engineering student passionate about learning web fundamentals, collaborating on beginner hackathons, and landing my first summer internship.",
+      github: "https://github.com/alex-student",
+      linkedin: "https://linkedin.com/in/alex-student-demo"
+    };
+
+    // Available popular skills for the profile picker
+    const ALL_SKILLS_LIST = [
+      "HTML", "CSS", "JavaScript", "Python", "React", "SQL", 
+      "Git", "Figma", "Java", "Linux", "Docker", "Flutter", 
+      "Excel", "Node.js", "C++", "SEO"
+    ];
+
+    /**
+     * ==========================================================================
+     * CAMPUS BUDDY - KEYWORD MATCHING KNOWLEDGE BASE
+     * ==========================================================================
+     * Covers 8 distinct domains:
+     * 1. Internships
+     * 2. Hackathons
+     * 3. GitHub
+     * 4. HTML
+     * 5. CSS
+     * 6. JavaScript
+     * 7. College Projects
+     * 8. Career Guidance & Resumes
+     */
+    const CHATBOT_RULES = [
+      // 1. Internships
+      {
+        keywords: ["how to find internship", "find internship", "how do i find internship", "internship tips", "search internship", "get internship"],
+        response: "Here is a proven 4-step guide for college students to land internships:<br>" +
+          "&bull; <strong>1. Build 2-3 Clean Projects:</strong> Recruiters want to see that you can write code! Build projects like a personal portfolio, this Internship Discovery Platform, or a student attendance tracker.<br>" +
+          "&bull; <strong>2. Host Code on GitHub:</strong> Keep clean repositories with informative README files and live demo links.<br>" +
+          "&bull; <strong>3. Craft a 1-Page Resume:</strong> Highlight technical skills, college coursework, and links to your live web projects.<br>" +
+          "&bull; <strong>4. Apply Consistently:</strong> Apply on college placement cells, LinkedIn, and platforms like InternConnect. Don't be afraid to reach out to founders or alumni with a polite message!"
+      },
+      {
+        keywords: ["first year internship", "1st year", "can 1st year get internship", "freshman internship"],
+        response: "Yes! While many corporate programs target 3rd-year students, first-year students can definitely land internships by:<br>" +
+          "&bull; Targeting early-stage startups who value eager learners with practical skills.<br>" +
+          "&bull; Applying for remote, open-source, or non-profit fellowships (like Google Summer of Code or GirlScript Summer of Code).<br>" +
+          "&bull; Focusing on solid web basics (HTML, CSS, JavaScript) rather than overwhelming yourself with 10 different frameworks.<br>" +
+          "&bull; Showcasing enthusiasm, quick learning ability, and genuine curiosity!"
+      },
+      {
+        keywords: ["interview", "interview tips", "prepare for interview", "how to prepare for interview"],
+        response: "Top tips for cracking college internship interviews:<br>" +
+          "&bull; <strong>Know Your Own Projects:</strong> Be ready to explain why you chose a specific technology, what challenges you faced, and how you solved them.<br>" +
+          "&bull; <strong>Review Fundamentals:</strong> Brush up on core concepts: HTML tags, CSS Flexbox, JavaScript functions, variables (<code>let</code> vs <code>const</code>), and basic data structures.<br>" +
+          "&bull; <strong>Think Aloud:</strong> When the interviewer asks a question or gives a coding problem, explain your thought process out loud.<br>" +
+          "&bull; <strong>Prepare Questions for the Interviewer:</strong> Ask about team culture, what tools they use, and what a typical intern project looks like!"
+      },
+
+      // 2. Hackathons
+      {
+        keywords: ["what is a hackathon", "what is hackathon", "hackathon meaning"],
+        response: "A <strong>hackathon</strong> is an exciting invention marathon where students, developers, and designers team up for 24 to 48 hours to build a working software or hardware prototype from scratch!<br><br>" +
+          "Key highlights:<br>" +
+          "&bull; You collaborate in small teams (typically 2 to 4 members).<br>" +
+          "&bull; You solve real problems (e.g., healthcare, education, student life, environment).<br>" +
+          "&bull; You learn new tools rapidly and receive mentorship from industry sponsors.<br>" +
+          "&bull; You get free swag, food, networking, and a great project to add to your resume!"
+      },
+      {
+        keywords: ["hackathon team", "team formation", "hackathon prep", "prepare for hackathon", "how to win hackathon"],
+        response: "How to prepare and form a winning hackathon team:<br>" +
+          "&bull; <strong>Build a Balanced Team:</strong> Aim for 1 Frontend/UI designer, 1-2 Logic/Backend coders, and 1 member great at pitching and presentations.<br>" +
+          "&bull; <strong>Brainstorm Beforehand:</strong> Familiarize yourself with the hackathon themes/tracks and have 2-3 problem statements in mind.<br>" +
+          "&bull; <strong>Focus on an MVP (Minimum Viable Product):</strong> Don't try to build every feature. Build one killer feature that works seamlessly during your 3-minute demo.<br>" +
+          "&bull; <strong>Tell a Story During the Pitch:</strong> Explain the problem, who it helps, demonstrate the working prototype, and discuss future improvements!"
+      },
+
+      // 3. GitHub
+      {
+        keywords: ["what is github", "what is git", "git vs github", "git and github"],
+        response: "Here is the difference made simple:<br>" +
+          "&bull; <strong>Git</strong> is a local software tool installed on your computer that tracks changes in your code files over time (version control).<br>" +
+          "&bull; <strong>GitHub</strong> is a cloud website (like Google Drive for code) that hosts your Git repositories online so you can share code, collaborate with teammates, and showcase your portfolio to recruiters!<br><br>" +
+          "Think of Git as the camera that takes snapshots of your code, and GitHub as the online photo album where you display them."
+      },
+      {
+        keywords: ["git commands", "push code", "commit", "git push", "git init", "how to push"],
+        response: "Here are the essential Git commands every beginner must know:<br>" +
+          "&bull; <code>git init</code> - Initializes a new Git repository in your project folder.<br>" +
+          "&bull; <code>git status</code> - Checks which files have been modified or staged.<br>" +
+          "&bull; <code>git add .</code> - Stages all modified files for the next snapshot.<br>" +
+          "&bull; <code>git commit -m \"Your clear message\"</code> - Saves a permanent snapshot of changes.<br>" +
+          "&bull; <code>git branch -M main</code> - Renames your current branch to main.<br>" +
+          "&bull; <code>git remote add origin &lt;URL&gt;</code> - Links your local folder to GitHub.<br>" +
+          "&bull; <code>git push -u origin main</code> - Uploads your local commits to GitHub!"
+      },
+      {
+        keywords: ["github pages", "host website", "free hosting"],
+        response: "<strong>GitHub Pages</strong> allows you to host static HTML, CSS, and JavaScript websites directly from your GitHub repository for FREE!<br><br>" +
+          "To host your project:<br>" +
+          "1. Push your <code>index.html</code> file to a GitHub repository.<br>" +
+          "2. Go to the repository <strong>Settings</strong> tab.<br>" +
+          "3. Click on <strong>Pages</strong> in the left sidebar.<br>" +
+          "4. Under 'Branch', select <code>main</code> and folder <code>/ (root)</code>, then click <strong>Save</strong>.<br>" +
+          "5. In 1-2 minutes, GitHub gives you a live public URL (e.g., <code>https://username.github.io/repo-name</code>)!"
+      },
+
+      // 4. HTML
+      {
+        keywords: ["what is html", "html meaning", "html structure"],
+        response: "<strong>HTML (HyperText Markup Language)</strong> is the skeleton and backbone of every webpage on the internet!<br>" +
+          "&bull; It organizes content using elements and tags like headings (<code>&lt;h1&gt;</code>), paragraphs (<code>&lt;p&gt;</code>), links (<code>&lt;a&gt;</code>), images (<code>&lt;img&gt;</code>), and forms (<code>&lt;form&gt;</code>).<br>" +
+          "&bull; <strong>Semantic HTML</strong> uses meaningful tags like <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, and <code>&lt;footer&gt;</code> which improve accessibility and SEO rankings."
+      },
+      {
+        keywords: ["doctype", "<!doctype html>", "what is doctype"],
+        response: "<code>&lt;!DOCTYPE html&gt;</code> is an instruction placed on the very first line of an HTML document. It informs the web browser that the document is written in modern <strong>HTML5</strong>, ensuring the page renders consistently across Chrome, Edge, Safari, and Firefox in standards-compliant mode."
+      },
+
+      // 5. CSS
+      {
+        keywords: ["what is css", "css meaning", "styling"],
+        response: "<strong>CSS (Cascading Style Sheets)</strong> is the design language used to style and beautify HTML elements on a web page!<br>" +
+          "&bull; With CSS, you control colors, fonts, margins, paddings, borders, backgrounds, and layouts.<br>" +
+          "&bull; Modern CSS features like <strong>Flexbox</strong> and <strong>Grid</strong> make it super easy to create fluid, responsive layouts that automatically adjust between phones and desktop monitors."
+      },
+      {
+        keywords: ["flexbox", "css flexbox", "what is flexbox"],
+        response: "<strong>CSS Flexbox</strong> (Flexible Box Layout) is a one-dimensional layout model designed for distributing space and aligning items within a container:<br>" +
+          "&bull; Set <code>display: flex;</code> on the parent container.<br>" +
+          "&bull; Use <code>justify-content</code> to align items along the main axis (e.g. <code>center</code>, <code>space-between</code>).<br>" +
+          "&bull; Use <code>align-items</code> to align items along the cross axis (e.g. <code>center</code>).<br>" +
+          "It eliminates messy floats and makes centering elements effortless!"
+      },
+      {
+        keywords: ["responsive design", "mobile friendly", "media query", "media queries"],
+        response: "<strong>Responsive Web Design</strong> ensures your website looks beautiful on smartphones, tablets, laptops, and ultra-wide screens:<br>" +
+          "&bull; Always include the viewport meta tag: <code>&lt;meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"&gt;</code><br>" +
+          "&bull; Use percentage or flexible units (<code>%</code>, <code>rem</code>, <code>fr</code>) instead of hardcoded pixels.<br>" +
+          "&bull; Use CSS <strong>Media Queries</strong> like <code>@media (max-width: 768px) { ... }</code> to rearrange columns into single vertical stacks on smaller screens!"
+      },
+
+      // 6. JavaScript
+      {
+        keywords: ["what is javascript", "what is js", "javascript meaning"],
+        response: "<strong>JavaScript (JS)</strong> is the programming language that makes websites dynamic and interactive!<br>" +
+          "&bull; While HTML is the skeleton and CSS is the skin, JavaScript is the brain and muscles.<br>" +
+          "&bull; It handles user clicks, submits forms without refreshing the page, validates inputs, updates content dynamically (DOM manipulation), and stores data locally using <code>localStorage</code>."
+      },
+      {
+        keywords: ["var let const", "let vs const", "difference between let and const", "variables in js"],
+        response: "In modern JavaScript (ES6+):<br>" +
+          "&bull; <code>const</code>: Use this by default for variables whose value will NOT be reassigned.<br>" +
+          "&bull; <code>let</code>: Use this when you expect the variable value to change (e.g., counters in a loop or toggle states).<br>" +
+          "&bull; <code>var</code>: An older way to declare variables. Avoid using <code>var</code> in modern code because it is function-scoped rather than block-scoped and can cause unexpected bugs."
+      },
+      {
+        keywords: ["dom", "dom manipulation", "what is dom"],
+        response: "<strong>The DOM (Document Object Model)</strong> represents your HTML page as a tree of objects that JavaScript can inspect and modify:<br>" +
+          "&bull; Selecting elements: <code>document.getElementById('myId')</code> or <code>document.querySelector('.myClass')</code>.<br>" +
+          "&bull; Modifying content: <code>element.textContent = \"New text\"</code>.<br>" +
+          "&bull; Adding event listeners: <code>button.addEventListener('click', () =&gt; { ... })</code>.<br>" +
+          "&bull; Changing styles: <code>element.style.color = \"blue\"</code>."
+      },
+      {
+        keywords: ["localstorage", "what is localstorage", "browser storage"],
+        response: "<strong>localStorage</strong> is a built-in browser API that lets web applications save key-value pairs of text right inside the user's browser:<br>" +
+          "&bull; Stored data persists even after the user closes or refreshes the page!<br>" +
+          "&bull; Save data: <code>localStorage.setItem('user', JSON.stringify(myData))</code><br>" +
+          "&bull; Retrieve data: <code>const data = JSON.parse(localStorage.getItem('user'))</code><br>" +
+          "&bull; Remove data: <code>localStorage.removeItem('user')</code><br>" +
+          "&bull; Great for saving theme preferences, bookmark lists, and offline demo forms!"
+      },
+
+      // 7. College Projects
+      {
+        keywords: ["suggest college project", "project idea", "project ideas", "suggest project", "college project"],
+        response: "Here are 4 standout project ideas tailored for college students and beginners:<br>" +
+          "&bull; <strong>1. InternConnect + Campus Buddy:</strong> (Just like this platform!) An internship discovery portal with a recommendation algorithm and built-in offline chatbot.<br>" +
+          "&bull; <strong>2. Campus Event & Club Hub:</strong> A platform where college clubs post hackathons, sports meets, and cultural festivals with an RSVP counter.<br>" +
+          "&bull; <strong>3. Smart Student Expense & Budget Tracker:</strong> A financial tool that visualizes monthly student allowances, mess bills, and hostel expenses using interactive charts.<br>" +
+          "&bull; <strong>4. College Notes & Resource Sharing Portal:</strong> A categorized repository where students can search and download previous semester question papers and handwritten notes."
+      },
+      {
+        keywords: ["project presentation", "viva", "how to present project", "college viva tips"],
+        response: "Tips for acing your college project viva and presentation:<br>" +
+          "&bull; <strong>1. Start with the Problem Statement:</strong> Clearly explain what real-world college problem your project solves.<br>" +
+          "&bull; <strong>2. Show, Don't Just Tell:</strong> Do a live 2-minute demonstration showing the main user flow (e.g., searching internships, applying, chatting with Campus Buddy).<br>" +
+          "&bull; <strong>3. Explain the Architecture:</strong> Explain how HTML structures the page, CSS provides the responsive styling, and JavaScript handles filtering and state.<br>" +
+          "&bull; <strong>4. Be Honest About Scope:</strong> Emphasize that this is an interactive frontend demo, and describe future additions like a backend database and authentication."
+      },
+
+      // 8. Career Guidance & Resumes
+      {
+        keywords: ["resume", "prepare resume", "how to prepare resume", "resume tips"],
+        response: "How to build a standout 1st-year resume:<br>" +
+          "&bull; <strong>Keep It to 1 Page:</strong> Recruiters spend only 6 to 10 seconds glancing at resumes.<br>" +
+          "&bull; <strong>Clear Sections:</strong> Contact Info (Email, GitHub, LinkedIn), Education, Technical Skills, Projects, and Achievements.<br>" +
+          "&bull; <strong>Use Action Verbs for Projects:</strong> E.g., <em>\"Engineered a responsive Internship Discovery Platform using Vanilla JavaScript and CSS Grid.\"</em><br>" +
+          "&bull; <strong>Include Live Links:</strong> Always include working GitHub repository links and live deployed demos so recruiters can test your work!"
+      },
+      {
+        keywords: ["roadmap", "1st year roadmap", "what should i learn", "beginner coding roadmap"],
+        response: "A step-by-step roadmap for your first year of college:<br>" +
+          "&bull; <strong>Semester 1:</strong><br>" +
+          "&nbsp;&nbsp;1. Master programming fundamentals (C, C++, or Python).<br>" +
+          "&nbsp;&nbsp;2. Learn Git and create a GitHub account.<br>" +
+          "&nbsp;&nbsp;3. Build basic web pages with HTML5 and CSS3.<br>" +
+          "&bull; <strong>Semester 2:</strong><br>" +
+          "&nbsp;&nbsp;1. Learn JavaScript (DOM manipulation, arrays, objects, events).<br>" +
+          "&nbsp;&nbsp;2. Learn basic Data Structures (Arrays, Strings, Linked Lists, Stacks).<br>" +
+          "&nbsp;&nbsp;3. Participate in your first college hackathon.<br>" +
+          "&nbsp;&nbsp;4. Build 2 complete frontend web projects and deploy them on GitHub Pages!"
+      },
+
+      // Greetings & Help
+      {
+        keywords: ["hello", "hi", "hey", "who are you", "what can you do"],
+        response: "Hello there! &#128075; I am <strong>Campus Buddy</strong>, your friendly college mentor.<br>" +
+          "You can ask me anything about:<br>" +
+          "&bull; &#128188; Finding internships &amp; preparing for interviews<br>" +
+          "&bull; &#127942; Hackathon tips, preparation &amp; project ideas<br>" +
+          "&bull; &#128025; Git commands &amp; GitHub repositories<br>" +
+          "&bull; &#128187; Web development basics (HTML, CSS, JavaScript)<br>" +
+          "&bull; &#128196; Preparing an impressive college resume<br>" +
+          "&bull; &#128161; Unique college project ideas &amp; viva tips!"
+      },
+      {
+        keywords: ["thank you", "thanks", "awesome", "great"],
+        response: "You're very welcome! &#128522; Keep coding, stay curious, and enjoy your college journey. If you ever have more questions, I'm right here to help!"
+      }
+    ];
+
+    /**
+     * ==========================================================================
+     * MAIN APPLICATION CONTROLLER
+     * ==========================================================================
+     */
+    class InternConnectApp {
+      constructor() {
+        // State variables
+        this.currentView = "home";
+        this.internships = [...INITIAL_INTERNSHIPS];
+        this.studentProfile = this.loadProfileFromStorage();
+        this.savedInternshipIds = this.loadSavedFromStorage();
+        this.applications = this.loadApplicationsFromStorage();
+        this.chatHistory = this.loadChatHistoryFromStorage();
+        
+        // Active Explore Filter State
+        this.filters = {
+          search: "",
+          category: "all",
+          skill: "all",
+          mode: "all",
+          location: "all",
+          sort: "relevance"
+        };
+      }
+
+      /**
+       * Initialize the application after DOM is ready
+       */
+      init() {
+        this.renderAllViews();
+        this.initProfileSkillsPicker();
+        this.initChatbots();
+        this.updateCounters();
+      }
+
+      /* ------------------------------------------------------------------------
+         STORAGE HELPERS (LocalStorage with safety fallbacks)
+         ------------------------------------------------------------------------ */
+      loadProfileFromStorage() {
+        try {
+          const stored = localStorage.getItem("internconnect_profile");
+          return stored ? JSON.parse(stored) : { ...DEFAULT_PROFILE };
+        } catch (e) {
+          console.warn("Could not read profile from localStorage:", e);
+          return { ...DEFAULT_PROFILE };
+        }
+      }
+
+      saveProfileToStorage() {
+        try {
+          localStorage.setItem("internconnect_profile", JSON.stringify(this.studentProfile));
+        } catch (e) {
+          console.warn("Failed saving profile to storage:", e);
+        }
+      }
+
+      loadSavedFromStorage() {
+        try {
+          const stored = localStorage.getItem("internconnect_saved_ids");
+          return stored ? JSON.parse(stored) : ["int-101", "int-103"]; // Default 2 bookmarks for instant demo
+        } catch (e) {
+          return ["int-101", "int-103"];
+        }
+      }
+
+      saveSavedToStorage() {
+        try {
+          localStorage.setItem("internconnect_saved_ids", JSON.stringify(this.savedInternshipIds));
+        } catch (e) {
+          console.warn("Failed saving bookmarks:", e);
+        }
+      }
+
+      loadApplicationsFromStorage() {
+        try {
+          const stored = localStorage.getItem("internconnect_applications");
+          if (stored) return JSON.parse(stored);
+          // Initial sample application for demonstration
+          return [
+            {
+              id: "app-001",
+              internshipId: "int-101",
+              title: "Frontend Web Developer Intern",
+              company: "TechNova Solutions",
+              mode: "Remote",
+              location: "Bangalore",
+              appliedDate: "2026-10-14",
+              status: "Under Review"
+            }
+          ];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      saveApplicationsToStorage() {
+        try {
+          localStorage.setItem("internconnect_applications", JSON.stringify(this.applications));
+        } catch (e) {
+          console.warn("Failed saving applications:", e);
+        }
+      }
+
+      loadChatHistoryFromStorage() {
+        try {
+          const stored = localStorage.getItem("internconnect_chat_history");
+          if (stored) return JSON.parse(stored);
+          return [
+            {
+              sender: "bot",
+              text: "Hello there! &#128075; I am <strong>Campus Buddy</strong>, your friendly college mentor. Ask me anything about finding internships, preparing resumes, hackathons, Git, HTML, CSS, JavaScript, or college project ideas!",
+              time: this.getCurrentTimeString()
+            }
+          ];
+        } catch (e) {
+          return [];
+        }
+      }
+
+      saveChatHistoryToStorage() {
+        try {
+          localStorage.setItem("internconnect_chat_history", JSON.stringify(this.chatHistory));
+        } catch (e) {
+          console.warn("Failed saving chat history:", e);
+        }
+      }
+
+      resetAllDemoData() {
+        if (confirm("Are you sure you want to reset all demo data? This will restore factory defaults for your profile, saved internships, and applications.")) {
+          localStorage.removeItem("internconnect_profile");
+          localStorage.removeItem("internconnect_saved_ids");
+          localStorage.removeItem("internconnect_applications");
+          localStorage.removeItem("internconnect_chat_history");
+          this.studentProfile = { ...DEFAULT_PROFILE };
+          this.savedInternshipIds = ["int-101", "int-103"];
+          this.applications = [
+            {
+              id: "app-001",
+              internshipId: "int-101",
+              title: "Frontend Web Developer Intern",
+              company: "TechNova Solutions",
+              mode: "Remote",
+              location: "Bangalore",
+              appliedDate: "2026-10-14",
+              status: "Under Review"
+            }
+          ];
+          this.chatHistory = [
+            {
+              sender: "bot",
+              text: "Hello there! &#128075; I am <strong>Campus Buddy</strong>, your friendly college mentor. Ask me anything about finding internships, preparing resumes, hackathons, Git, HTML, CSS, JavaScript, or college project ideas!",
+              time: this.getCurrentTimeString()
+            }
+          ];
+          this.saveProfileToStorage();
+          this.saveSavedToStorage();
+          this.saveApplicationsToStorage();
+          this.saveChatHistoryToStorage();
+          this.renderAllViews();
+          this.initProfileSkillsPicker();
+          this.renderChatMessages();
+          this.updateCounters();
+          this.showToast("All demo data reset to fresh default values! \uD83D\uDD04");
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         VIEW ROUTING & NAVIGATION
+         ------------------------------------------------------------------------ */
+      switchView(viewName) {
+        this.currentView = viewName;
+
+        // Hide all views, show targeted view
+        document.querySelectorAll(".app-view").forEach(view => {
+          view.classList.remove("active");
+        });
+        const targetView = document.getElementById(`view-${viewName}`);
+        if (targetView) {
+          targetView.classList.add("active");
+        }
+
+        // Update nav active classes
+        document.querySelectorAll(".nav-link").forEach(link => {
+          if (link.getAttribute("data-view") === viewName) {
+            link.classList.add("active");
+          } else {
+            link.classList.remove("active");
+          }
+        });
+
+        // Trigger view-specific re-renders
+        if (viewName === "home") this.renderHomeView();
+        if (viewName === "explore") this.renderExploreView();
+        if (viewName === "recommended") this.renderRecommendedView();
+        if (viewName === "saved") this.renderSavedView();
+        if (viewName === "applications") this.renderApplicationsView();
+        if (viewName === "profile") this.populateProfileForm();
+        if (viewName === "chatbot") this.renderChatMessages();
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      toggleMobileNav() {
+        const drawer = document.getElementById("mobileNavDrawer");
+        drawer.classList.toggle("open");
+      }
+
+      updateCounters() {
+        const savedCount = this.savedInternshipIds.length;
+        const appliedCount = this.applications.length;
+
+        // Update nav counters
+        const navSaved = document.getElementById("navSavedCount");
+        const navApplied = document.getElementById("navAppliedCount");
+        const mobileSaved = document.getElementById("mobileNavSavedCount");
+        const mobileApplied = document.getElementById("mobileNavAppliedCount");
+
+        if (navSaved) navSaved.textContent = savedCount;
+        if (navApplied) navApplied.textContent = appliedCount;
+        if (mobileSaved) mobileSaved.textContent = savedCount;
+        if (mobileApplied) mobileApplied.textContent = appliedCount;
+
+        // Update stats on dashboard
+        const statSaved = document.getElementById("statSavedCount");
+        const statApplied = document.getElementById("statAppliedCount");
+        if (statSaved) statSaved.textContent = savedCount;
+        if (statApplied) statApplied.textContent = appliedCount;
+      }
+
+      renderAllViews() {
+        this.renderHomeView();
+        this.renderExploreView();
+        this.renderRecommendedView();
+        this.renderSavedView();
+        this.renderApplicationsView();
+        this.populateProfileForm();
+        this.updateCounters();
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 1: HOME
+         ------------------------------------------------------------------------ */
+      renderHomeView() {
+        // Welcome text
+        const greeting = document.getElementById("heroStudentGreeting");
+        if (greeting) {
+          greeting.textContent = `Welcome, ${this.studentProfile.name.split(" ")[0]}! Ready to discover internships?`;
+        }
+
+        // Profile snapshot on home
+        const nameEl = document.getElementById("homeProfileName");
+        const degreeEl = document.getElementById("homeProfileDegree");
+        const collegeEl = document.getElementById("homeProfileCollege");
+        const initialsEl = document.getElementById("homeAvatarInitials");
+        const skillsEl = document.getElementById("homeProfileSkills");
+
+        if (nameEl) nameEl.textContent = this.studentProfile.name;
+        if (degreeEl) degreeEl.textContent = `${this.studentProfile.degree} • ${this.studentProfile.year}`;
+        if (collegeEl) collegeEl.textContent = this.studentProfile.college;
+
+        if (initialsEl) {
+          const parts = this.studentProfile.name.split(" ");
+          initialsEl.textContent = parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : parts[0][0].toUpperCase();
+        }
+
+        if (skillsEl) {
+          skillsEl.innerHTML = this.studentProfile.skills
+            .slice(0, 5)
+            .map(s => `<span class="skill-pill">${this.escapeHTML(s)}</span>`)
+            .join("");
+        }
+
+        // Render Featured Internships
+        const featuredGrid = document.getElementById("homeFeaturedGrid");
+        if (featuredGrid) {
+          const featured = this.internships.filter(item => item.featured);
+          featuredGrid.innerHTML = featured.map(item => this.createInternshipCardHTML(item)).join("");
+        }
+
+        // Stat count
+        const totalEl = document.getElementById("statTotalInternships");
+        if (totalEl) totalEl.textContent = this.internships.length;
+
+        const recEl = document.getElementById("statRecommendedCount");
+        if (recEl) {
+          const count = this.internships.filter(item => this.calculateMatchScore(item).score >= 50).length;
+          recEl.textContent = count;
+        }
+      }
+
+      quickSearchFromHero() {
+        const input = document.getElementById("heroSearchInput");
+        const query = input ? input.value.trim() : "";
+        this.filters.search = query;
+        const exploreInput = document.getElementById("exploreSearchInput");
+        if (exploreInput) exploreInput.value = query;
+        this.switchView("explore");
+        this.applyFilters();
+      }
+
+      filterByTag(tag) {
+        if (tag === "Remote") {
+          this.filters.mode = "Remote";
+          const el = document.getElementById("filterMode");
+          if (el) el.value = "Remote";
+        } else {
+          this.filters.search = tag;
+          const el = document.getElementById("exploreSearchInput");
+          if (el) el.value = tag;
+        }
+        this.switchView("explore");
+        this.applyFilters();
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 2: EXPLORE & FILTERING
+         ------------------------------------------------------------------------ */
+      renderExploreView() {
+        const grid = document.getElementById("exploreInternshipsGrid");
+        const empty = document.getElementById("exploreEmptyState");
+        const countText = document.getElementById("exploreCountText");
+
+        let results = [...this.internships];
+
+        // 1. Text Search Filter (Title, Company, Skills, Description)
+        if (this.filters.search) {
+          const query = this.filters.search.toLowerCase();
+          results = results.filter(item => {
+            const inTitle = item.title.toLowerCase().includes(query);
+            const inCompany = item.company.toLowerCase().includes(query);
+            const inCategory = item.category.toLowerCase().includes(query);
+            const inSkills = item.skills.some(s => s.toLowerCase().includes(query));
+            return inTitle || inCompany || inCategory || inSkills;
+          });
+        }
+
+        // 2. Category Filter
+        if (this.filters.category !== "all") {
+          results = results.filter(item => item.category === this.filters.category);
+        }
+
+        // 3. Skill Filter
+        if (this.filters.skill !== "all") {
+          results = results.filter(item => 
+            item.skills.some(s => s.toLowerCase().includes(this.filters.skill.toLowerCase()))
+          );
+        }
+
+        // 4. Work Mode Filter
+        if (this.filters.mode !== "all") {
+          results = results.filter(item => item.mode === this.filters.mode);
+        }
+
+        // 5. Location Filter
+        if (this.filters.location !== "all") {
+          results = results.filter(item => item.location === this.filters.location || item.mode === "Remote");
+        }
+
+        // 6. Sorting
+        if (this.filters.sort === "stipendDesc") {
+          results.sort((a, b) => b.stipendNum - a.stipendNum);
+        } else if (this.filters.sort === "deadline") {
+          results.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+        } else if (this.filters.sort === "titleAsc") {
+          results.sort((a, b) => a.title.localeCompare(b.title));
+        }
+
+        // Update count
+        if (countText) countText.textContent = results.length;
+
+        // Render or show empty state
+        if (results.length === 0) {
+          if (grid) grid.innerHTML = "";
+          if (empty) empty.style.display = "block";
+        } else {
+          if (empty) empty.style.display = "none";
+          if (grid) {
+            grid.innerHTML = results.map(item => this.createInternshipCardHTML(item)).join("");
+          }
+        }
+      }
+
+      applyFilters() {
+        const searchInput = document.getElementById("exploreSearchInput");
+        const catSelect = document.getElementById("filterCategory");
+        const skillSelect = document.getElementById("filterSkill");
+        const modeSelect = document.getElementById("filterMode");
+        const locSelect = document.getElementById("filterLocation");
+        const sortSelect = document.getElementById("filterSort");
+
+        this.filters.search = searchInput ? searchInput.value.trim() : "";
+        this.filters.category = catSelect ? catSelect.value : "all";
+        this.filters.skill = skillSelect ? skillSelect.value : "all";
+        this.filters.mode = modeSelect ? modeSelect.value : "all";
+        this.filters.location = locSelect ? locSelect.value : "all";
+        this.filters.sort = sortSelect ? sortSelect.value : "relevance";
+
+        this.renderExploreView();
+      }
+
+      resetFilters() {
+        this.filters = {
+          search: "",
+          category: "all",
+          skill: "all",
+          mode: "all",
+          location: "all",
+          sort: "relevance"
+        };
+        const searchInput = document.getElementById("exploreSearchInput");
+        const catSelect = document.getElementById("filterCategory");
+        const skillSelect = document.getElementById("filterSkill");
+        const modeSelect = document.getElementById("filterMode");
+        const locSelect = document.getElementById("filterLocation");
+        const sortSelect = document.getElementById("filterSort");
+
+        if (searchInput) searchInput.value = "";
+        if (catSelect) catSelect.value = "all";
+        if (skillSelect) skillSelect.value = "all";
+        if (modeSelect) modeSelect.value = "all";
+        if (locSelect) locSelect.value = "all";
+        if (sortSelect) sortSelect.value = "relevance";
+
+        this.renderExploreView();
+        this.showToast("Filters reset to show all internships \uD83D\uDD04");
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 3: RECOMMENDATIONS (Smart Match Algorithm)
+         ------------------------------------------------------------------------ */
+      renderRecommendedView() {
+        const grid = document.getElementById("recommendedInternshipsGrid");
+        const summary = document.getElementById("recommendationCriteriaSummary");
+
+        if (summary) {
+          summary.innerHTML = `
+            <strong>Target Role Skills:</strong> ${this.studentProfile.skills.join(", ")} | 
+            <strong>Mode:</strong> ${this.studentProfile.preferredMode} | 
+            <strong>Location:</strong> ${this.studentProfile.preferredLocation} | 
+            <strong>Education:</strong> ${this.studentProfile.degree}
+          `;
+        }
+
+        // Calculate score for each internship
+        const scoredList = this.internships.map(item => {
+          const matchData = this.calculateMatchScore(item);
+          return {
+            ...item,
+            matchScore: matchData.score,
+            matchReasons: matchData.reasons
+          };
+        });
+
+        // Sort descending by score
+        scoredList.sort((a, b) => b.matchScore - a.matchScore);
+
+        if (grid) {
+          grid.innerHTML = scoredList.map(item => this.createInternshipCardHTML(item, true)).join("");
+        }
+      }
+
+      /**
+       * Educational Recommendation Algorithm
+       * Evaluates skill overlap, mode preference, location match, and degree relevance
+       */
+      calculateMatchScore(internship) {
+        let score = 20; // baseline discovery score
+        let reasons = [];
+
+        // 1. Skill overlap (Most heavily weighted - up to 50 points)
+        const studentSkillsLower = this.studentProfile.skills.map(s => s.toLowerCase());
+        const matchingSkills = internship.skills.filter(s => 
+          studentSkillsLower.includes(s.toLowerCase())
+        );
+
+        if (matchingSkills.length > 0) {
+          const skillPoints = Math.min(50, Math.round((matchingSkills.length / internship.skills.length) * 50));
+          score += skillPoints;
+          reasons.push(`Matches ${matchingSkills.length} of your skills (${matchingSkills.join(", ")})`);
+        }
+
+        // 2. Work Mode Match (15 points)
+        if (this.studentProfile.preferredMode === "Any" || internship.mode === this.studentProfile.preferredMode) {
+          score += 15;
+          reasons.push(`Matches preferred ${internship.mode} mode`);
+        }
+
+        // 3. Location Match (10 points)
+        if (this.studentProfile.preferredLocation === "Any" || 
+            internship.location === this.studentProfile.preferredLocation ||
+            internship.mode === "Remote") {
+          score += 10;
+          reasons.push(`Location compatible (${internship.location})`);
+        }
+
+        // 4. Category / Degree Alignment (5 points)
+        if (this.studentProfile.interests && this.studentProfile.interests.includes(internship.category)) {
+          score += 5;
+          reasons.push(`Matches your interest in ${internship.category}`);
+        }
+
+        // Cap at 98% (realistic demo ceiling)
+        score = Math.min(98, score);
+
+        return {
+          score: score,
+          reasons: reasons.slice(0, 2).join(" &bull; ")
+        };
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 4: SAVED INTERNSHIPS
+         ------------------------------------------------------------------------ */
+      renderSavedView() {
+        const grid = document.getElementById("savedInternshipsGrid");
+        const empty = document.getElementById("savedEmptyState");
+
+        const savedList = this.internships.filter(item => 
+          this.savedInternshipIds.includes(item.id)
+        );
+
+        if (savedList.length === 0) {
+          if (grid) grid.innerHTML = "";
+          if (empty) empty.style.display = "block";
+        } else {
+          if (empty) empty.style.display = "none";
+          if (grid) {
+            grid.innerHTML = savedList.map(item => this.createInternshipCardHTML(item)).join("");
+          }
+        }
+      }
+
+      toggleSaveInternship(id, event) {
+        if (event) event.stopPropagation();
+
+        const index = this.savedInternshipIds.indexOf(id);
+        if (index > -1) {
+          this.savedInternshipIds.splice(index, 1);
+          this.showToast("Internship removed from saved bookmarks \uD83D\uDD16");
+        } else {
+          this.savedInternshipIds.push(id);
+          this.showToast("Internship saved to your bookmarks! \u2B50");
+        }
+
+        this.saveSavedToStorage();
+        this.updateCounters();
+
+        // Re-render current view to reflect bookmark icon state
+        if (this.currentView === "saved") this.renderSavedView();
+        if (this.currentView === "explore") this.renderExploreView();
+        if (this.currentView === "recommended") this.renderRecommendedView();
+        if (this.currentView === "home") this.renderHomeView();
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 5: APPLICATIONS TRACKER
+         ------------------------------------------------------------------------ */
+      renderApplicationsView() {
+        const tbody = document.getElementById("applicationsTableBody");
+        const empty = document.getElementById("appsEmptyState");
+        const tableContainer = document.getElementById("appsTableContainer");
+
+        // Status counts
+        const totalEl = document.getElementById("appStatusTotal");
+        const reviewEl = document.getElementById("appStatusUnderReview");
+        const shortEl = document.getElementById("appStatusShortlisted");
+        const interviewEl = document.getElementById("appStatusInterview");
+
+        if (totalEl) totalEl.textContent = this.applications.length;
+        if (reviewEl) reviewEl.textContent = this.applications.filter(a => a.status === "Under Review").length;
+        if (shortEl) shortEl.textContent = this.applications.filter(a => a.status === "Shortlisted").length;
+        if (interviewEl) interviewEl.textContent = this.applications.filter(a => a.status === "Interview Scheduled").length;
+
+        if (this.applications.length === 0) {
+          if (tableContainer) tableContainer.style.display = "none";
+          if (empty) empty.style.display = "block";
+          return;
+        }
+
+        if (tableContainer) tableContainer.style.display = "block";
+        if (empty) empty.style.display = "none";
+
+        if (tbody) {
+          tbody.innerHTML = this.applications.map(app => {
+            const statusClass = this.getStatusBadgeClass(app.status);
+            return `
+              <tr>
+                <td>
+                  <strong style="color: var(--text-main);">${this.escapeHTML(app.title)}</strong>
+                  <div style="font-size: 12px; color: var(--purple); font-weight: 600;">${this.escapeHTML(app.company)}</div>
+                </td>
+                <td style="color: var(--text-muted); font-size: 13px;">${app.appliedDate}</td>
+                <td>
+                  <span class="badge ${app.mode === 'Remote' ? 'badge-remote' : app.mode === 'Hybrid' ? 'badge-hybrid' : 'badge-onsite'}">
+                    ${this.escapeHTML(app.mode)}
+                  </span>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">${this.escapeHTML(app.location)}</div>
+                </td>
+                <td>
+                  <span class="status-badge ${statusClass}">
+                    &bull; ${this.escapeHTML(app.status)}
+                  </span>
+                </td>
+                <td>
+                  <select onchange="app.changeApplicationStatus('${app.id}', this.value)" style="padding: 4px 8px; font-size: 12px;">
+                    <option value="Applied" ${app.status === 'Applied' ? 'selected' : ''}>Applied</option>
+                    <option value="Under Review" ${app.status === 'Under Review' ? 'selected' : ''}>Under Review</option>
+                    <option value="Shortlisted" ${app.status === 'Shortlisted' ? 'selected' : ''}>Shortlisted</option>
+                    <option value="Interview Scheduled" ${app.status === 'Interview Scheduled' ? 'selected' : ''}>Interview Scheduled</option>
+                    <option value="Not Selected" ${app.status === 'Not Selected' ? 'selected' : ''}>Not Selected</option>
+                  </select>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" onclick="app.withdrawApplication('${app.id}')">
+                    Withdraw
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join("");
+        }
+      }
+
+      getStatusBadgeClass(status) {
+        if (status === "Applied") return "status-applied";
+        if (status === "Under Review") return "status-under-review";
+        if (status === "Shortlisted") return "status-shortlisted";
+        if (status === "Interview Scheduled") return "status-interview";
+        return "status-rejected";
+      }
+
+      changeApplicationStatus(appId, newStatus) {
+        const item = this.applications.find(a => a.id === appId);
+        if (item) {
+          item.status = newStatus;
+          this.saveApplicationsToStorage();
+          this.renderApplicationsView();
+          this.showToast(`Application status updated to "${newStatus}"! \uD83D\uDCCB`);
+        }
+      }
+
+      withdrawApplication(appId) {
+        if (confirm("Are you sure you want to withdraw this application?")) {
+          this.applications = this.applications.filter(a => a.id !== appId);
+          this.saveApplicationsToStorage();
+          this.updateCounters();
+          this.renderApplicationsView();
+          this.renderExploreView(); // update Apply button state
+          this.showToast("Application withdrawn successfully.");
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         RENDER VIEW 6: STUDENT PROFILE FORM
+         ------------------------------------------------------------------------ */
+      populateProfileForm() {
+        const p = this.studentProfile;
+        const setVal = (id, val) => {
+          const el = document.getElementById(id);
+          if (el) el.value = val || "";
+        };
+
+        setVal("profName", p.name);
+        setVal("profEmail", p.email);
+        setVal("profPhone", p.phone);
+        setVal("profCollege", p.college);
+        setVal("profDegree", p.degree);
+        setVal("profYear", p.year);
+        setVal("profPreferredMode", p.preferredMode);
+        setVal("profPreferredLocation", p.preferredLocation);
+        setVal("profBio", p.bio);
+        setVal("profGithub", p.github);
+        setVal("profLinkedin", p.linkedin);
+
+        this.renderProfileSkillsPicker();
+      }
+
+      initProfileSkillsPicker() {
+        this.renderProfileSkillsPicker();
+      }
+
+      renderProfileSkillsPicker() {
+        const container = document.getElementById("profileSkillsPicker");
+        if (!container) return;
+
+        container.innerHTML = ALL_SKILLS_LIST.map(skill => {
+          const isSelected = this.studentProfile.skills.includes(skill);
+          return `
+            <button type="button" 
+                    class="skill-toggle-btn ${isSelected ? 'selected' : ''}" 
+                    onclick="app.toggleProfileSkill('${skill}')">
+              ${isSelected ? '&#10003; ' : '+ '} ${skill}
+            </button>
+          `;
+        }).join("");
+      }
+
+      toggleProfileSkill(skill) {
+        const index = this.studentProfile.skills.indexOf(skill);
+        if (index > -1) {
+          this.studentProfile.skills.splice(index, 1);
+        } else {
+          this.studentProfile.skills.push(skill);
+        }
+        this.renderProfileSkillsPicker();
+      }
+
+      handleProfileSave(e) {
+        e.preventDefault();
+
+        const getVal = id => document.getElementById(id).value.trim();
+
+        this.studentProfile = {
+          name: getVal("profName"),
+          email: getVal("profEmail"),
+          phone: getVal("profPhone"),
+          college: getVal("profCollege"),
+          degree: getVal("profDegree"),
+          year: getVal("profYear"),
+          skills: [...this.studentProfile.skills],
+          interests: this.studentProfile.interests || ["Web Development"],
+          preferredMode: getVal("profPreferredMode"),
+          preferredLocation: getVal("profPreferredLocation"),
+          bio: getVal("profBio"),
+          github: getVal("profGithub"),
+          linkedin: getVal("profLinkedin")
+        };
+
+        this.saveProfileToStorage();
+        this.renderAllViews();
+        this.showToast("Student profile updated! Matches refreshed \uD83C\uDFAF");
+      }
+
+      loadSampleProfile() {
+        this.studentProfile = { ...DEFAULT_PROFILE };
+        this.populateProfileForm();
+        this.showToast("Sample first-year profile loaded! \uD83D\uDD04");
+      }
+
+      /* ------------------------------------------------------------------------
+         HTML GENERATOR FOR INTERNSHIP CARDS
+         ------------------------------------------------------------------------ */
+      createInternshipCardHTML(item, isRecommendation = false) {
+        const isSaved = this.savedInternshipIds.includes(item.id);
+        const isApplied = this.applications.some(a => a.internshipId === item.id);
+        const modeBadgeClass = item.mode === "Remote" ? "badge-remote" : item.mode === "Hybrid" ? "badge-hybrid" : "badge-onsite";
+
+        // Recommendation score header if applicable
+        let matchBannerHTML = "";
+        if (isRecommendation && item.matchScore) {
+          matchBannerHTML = `
+            <div class="match-banner">
+              <div>
+                <span class="match-percent">&#127919; ${item.matchScore}% Profile Match</span>
+                <div class="match-reasons">${this.escapeHTML(item.matchReasons || "Strong match with your profile")}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="internship-card">
+            <div>
+              <div class="card-top-row">
+                <div class="company-avatar">${item.company[0]}</div>
+                <div class="card-badges">
+                  <span class="badge ${modeBadgeClass}">&#128205; ${item.mode}</span>
+                  <span class="badge badge-primary">${this.escapeHTML(item.category)}</span>
+                  <span class="badge badge-demo">Demo</span>
+                </div>
+              </div>
+
+              <h4 class="internship-title">${this.escapeHTML(item.title)}</h4>
+              <div class="company-name">&#127970; ${this.escapeHTML(item.company)}</div>
+
+              ${matchBannerHTML}
+
+              <div class="card-meta-list">
+                <div class="meta-item">&#128176; <strong>${item.stipend}</strong></div>
+                <div class="meta-item">&#9201;&#65039; <span>${item.duration}</span></div>
+                <div class="meta-item">&#128205; <span>${item.location}</span></div>
+                <div class="meta-item">&#128197; <span>Apply by: ${item.deadline}</span></div>
+              </div>
+
+              <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+                &#127891; <strong>Eligibility:</strong> ${this.escapeHTML(item.courses)}
+              </div>
+
+              <div class="card-skills">
+                <div class="card-skills-label">Required Skills:</div>
+                <div class="card-skills-list">
+                  ${item.skills.map(s => `<span class="skill-pill">${this.escapeHTML(s)}</span>`).join("")}
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button class="btn-bookmark ${isSaved ? 'active' : ''}" 
+                      title="${isSaved ? 'Remove Bookmark' : 'Save Bookmark'}" 
+                      onclick="app.toggleSaveInternship('${item.id}', event)">
+                ${isSaved ? '&#9733;' : '&#9734;'}
+              </button>
+
+              <button class="btn btn-sm btn-secondary" onclick="app.openDetailsModal('${item.id}')">
+                Details
+              </button>
+
+              ${isApplied 
+                ? `<button class="btn btn-sm btn-disabled" disabled>Applied &#10003;</button>`
+                : `<button class="btn btn-sm btn-primary" onclick="app.openApplyModal('${item.id}')">Apply Now &#128640;</button>`
+              }
+            </div>
+          </div>
+        `;
+      }
+
+      /* ------------------------------------------------------------------------
+         APPLY MODAL & APPLICATION SUBMISSION
+         ------------------------------------------------------------------------ */
+      openApplyModal(internshipId) {
+        const item = this.internships.find(i => i.id === internshipId);
+        if (!item) return;
+
+        document.getElementById("applyInternshipId").value = item.id;
+        document.getElementById("applyModalSubtitle").textContent = `${item.title} • ${item.company}`;
+
+        // Autofill from student profile
+        document.getElementById("applyFullName").value = this.studentProfile.name;
+        document.getElementById("applyEmail").value = this.studentProfile.email;
+        document.getElementById("applyPhone").value = this.studentProfile.phone;
+        document.getElementById("applyCollege").value = this.studentProfile.college;
+
+        const coverField = document.getElementById("applyCoverLetter");
+        coverField.value = `I am a student at ${this.studentProfile.college} pursuing ${this.studentProfile.degree}. I have practical skills in ${this.studentProfile.skills.slice(0, 3).join(", ")} and am very eager to contribute as an intern at ${item.company}!`;
+
+        const modal = document.getElementById("applyModalOverlay");
+        modal.classList.add("open");
+      }
+
+      closeApplyModal() {
+        document.getElementById("applyModalOverlay").classList.remove("open");
+      }
+
+      submitApplicationForm(e) {
+        e.preventDefault();
+
+        const internshipId = document.getElementById("applyInternshipId").value;
+        const item = this.internships.find(i => i.id === internshipId);
+        if (!item) return;
+
+        // Check if already applied
+        if (this.applications.some(a => a.internshipId === internshipId)) {
+          alert("You have already applied for this internship!");
+          this.closeApplyModal();
+          return;
+        }
+
+        const today = new Date().toISOString().split("T")[0];
+
+        const newApp = {
+          id: `app-${Date.now().toString().slice(-4)}`,
+          internshipId: item.id,
+          title: item.title,
+          company: item.company,
+          mode: item.mode,
+          location: item.location,
+          appliedDate: today,
+          status: "Applied"
+        };
+
+        this.applications.unshift(newApp);
+        this.saveApplicationsToStorage();
+        this.closeApplyModal();
+        this.updateCounters();
+
+        // Refresh views
+        this.renderAllViews();
+
+        this.showToast(`Application submitted successfully to ${item.company}! \uD83C\uDF89`);
+
+        // Ask if student wants to view tracker
+        setTimeout(() => {
+          if (confirm(`Application recorded! Would you like to check your Application Tracker now?`)) {
+            this.switchView("applications");
+          }
+        }, 400);
+      }
+
+      /* ------------------------------------------------------------------------
+         DETAILS MODAL
+         ------------------------------------------------------------------------ */
+      openDetailsModal(internshipId) {
+        const item = this.internships.find(i => i.id === internshipId);
+        if (!item) return;
+
+        document.getElementById("detailsModalTitle").textContent = item.title;
+        document.getElementById("detailsModalCompany").textContent = `🏢 ${item.company} • ${item.category}`;
+
+        const isApplied = this.applications.some(a => a.internshipId === item.id);
+        const applyBtn = document.getElementById("detailsModalApplyBtn");
+        if (isApplied) {
+          applyBtn.textContent = "Already Applied ✓";
+          applyBtn.disabled = true;
+          applyBtn.className = "btn btn-disabled";
+        } else {
+          applyBtn.textContent = "Apply For This Role 🚀";
+          applyBtn.disabled = false;
+          applyBtn.className = "btn btn-primary";
+          applyBtn.onclick = () => {
+            this.closeDetailsModal();
+            this.openApplyModal(item.id);
+          };
+        }
+
+        const body = document.getElementById("detailsModalBody");
+        body.innerHTML = `
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+            <span class="badge ${item.mode === 'Remote' ? 'badge-remote' : item.mode === 'Hybrid' ? 'badge-hybrid' : 'badge-onsite'}">&#128205; ${item.mode}</span>
+            <span class="badge badge-primary">&#128176; ${item.stipend}</span>
+            <span class="badge badge-purple">&#9201;&#65039; ${item.duration}</span>
+            <span class="badge badge-demo">&#128197; Deadline: ${item.deadline}</span>
+          </div>
+
+          <h4 style="font-size: 15px; margin-bottom: 6px;">Role Description:</h4>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 18px;">
+            ${this.escapeHTML(item.description)}
+          </p>
+
+          <h4 style="font-size: 15px; margin-bottom: 6px;">Eligible Courses:</h4>
+          <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 18px;">
+            &#127891; ${this.escapeHTML(item.courses)}
+          </p>
+
+          <h4 style="font-size: 15px; margin-bottom: 6px;">Required Skills:</h4>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px;">
+            ${item.skills.map(s => `<span class="skill-pill">${this.escapeHTML(s)}</span>`).join("")}
+          </div>
+
+          <h4 style="font-size: 15px; margin-bottom: 6px;">Perks &amp; Learning Benefits:</h4>
+          <p style="font-size: 13.5px; color: #15803d; background: #f0fdf4; padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid #bbf7d0;">
+            &#127873; ${this.escapeHTML(item.perks)}
+          </p>
+        `;
+
+        document.getElementById("detailsModalOverlay").classList.add("open");
+      }
+
+      closeDetailsModal() {
+        document.getElementById("detailsModalOverlay").classList.remove("open");
+      }
+
+      /* ------------------------------------------------------------------------
+         CAMPUS BUDDY CHATBOT ENGINE
+         ------------------------------------------------------------------------ */
+      initChatbots() {
+        this.renderChatMessages();
+      }
+
+      toggleFloatingChat() {
+        const popup = document.getElementById("floatingChatPopup");
+        popup.classList.toggle("open");
+        if (popup.classList.contains("open")) {
+          const input = document.getElementById("floatingChatInput");
+          if (input) input.focus();
+          this.scrollChatToBottom();
+        }
+      }
+
+      renderChatMessages() {
+        const dedicatedContainer = document.getElementById("dedicatedChatMessages");
+        const floatingContainer = document.getElementById("floatingChatMessages");
+
+        const html = this.chatHistory.map(msg => {
+          const isUser = msg.sender === "user";
+          return `
+            <div class="chat-bubble-wrap ${isUser ? 'user' : 'bot'}">
+              <div class="bubble-avatar ${isUser ? 'user' : 'bot'}">
+                ${isUser ? '&#128100;' : '&#129302;'}
+              </div>
+              <div class="chat-bubble ${isUser ? 'user' : 'bot'}">
+                <div>${msg.text}</div>
+                <div class="chat-bubble-time">${msg.time}</div>
+              </div>
+            </div>
+          `;
+        }).join("");
+
+        if (dedicatedContainer) dedicatedContainer.innerHTML = html;
+        if (floatingContainer) floatingContainer.innerHTML = html;
+
+        this.scrollChatToBottom();
+      }
+
+      scrollChatToBottom() {
+        setTimeout(() => {
+          const dedicatedContainer = document.getElementById("dedicatedChatMessages");
+          const floatingContainer = document.getElementById("floatingChatMessages");
+          if (dedicatedContainer) dedicatedContainer.scrollTop = dedicatedContainer.scrollHeight;
+          if (floatingContainer) floatingContainer.scrollTop = floatingContainer.scrollHeight;
+        }, 50);
+      }
+
+      sendDedicatedChat() {
+        const input = document.getElementById("dedicatedChatInput");
+        const text = input ? input.value.trim() : "";
+        if (!text) return;
+        input.value = "";
+        this.handleUserMessageInput(text, "dedicated");
+      }
+
+      sendFloatingChat() {
+        const input = document.getElementById("floatingChatInput");
+        const text = input ? input.value.trim() : "";
+        if (!text) return;
+        input.value = "";
+        this.handleUserMessageInput(text, "floating");
+      }
+
+      askBuddyQuestion(questionText) {
+        this.switchView("chatbot");
+        this.handleUserMessageInput(questionText, "dedicated");
+      }
+
+      handleUserMessageInput(userText, sourceContext) {
+        if (!userText || !userText.trim()) return;
+
+        // Add user message
+        const userMsg = {
+          sender: "user",
+          text: this.escapeHTML(userText),
+          time: this.getCurrentTimeString()
+        };
+        this.chatHistory.push(userMsg);
+        this.renderChatMessages();
+
+        // Show typing indicator
+        const dedicatedTyping = document.getElementById("dedicatedTypingIndicator");
+        const floatingTyping = document.getElementById("floatingTypingIndicator");
+        if (dedicatedTyping) dedicatedTyping.style.display = "flex";
+        if (floatingTyping) floatingTyping.style.display = "flex";
+        this.scrollChatToBottom();
+
+        // Simulate 400ms thought delay for natural feel
+        setTimeout(() => {
+          const botResponseText = this.getBotResponse(userText);
+          const botMsg = {
+            sender: "bot",
+            text: botResponseText,
+            time: this.getCurrentTimeString()
+          };
+          this.chatHistory.push(botMsg);
+
+          if (dedicatedTyping) dedicatedTyping.style.display = "none";
+          if (floatingTyping) floatingTyping.style.display = "none";
+
+          this.saveChatHistoryToStorage();
+          this.renderChatMessages();
+        }, 400);
+      }
+
+      /**
+       * Keyword Matcher
+       */
+      getBotResponse(input) {
+        const cleanInput = input.toLowerCase().replace(/[^\w\s]/gi, "").trim();
+
+        // Check against our knowledge rules
+        for (const rule of CHATBOT_RULES) {
+          for (const keyword of rule.keywords) {
+            const cleanKeyword = keyword.toLowerCase().replace(/[^\w\s]/gi, "").trim();
+            if (cleanInput.includes(cleanKeyword)) {
+              return rule.response;
+            }
+          }
+        }
+
+        // Friendly fallback response
+        return "I'm here to help, but I didn't quite catch the specific topic in your question! &#128522;<br><br>" +
+          "As an offline educational assistant, I specialize in answering questions about:<ul>" +
+          "<li><strong>Internships:</strong> E.g., <em>\"How do I find internships?\"</em> or <em>\"Interview tips\"</em></li>" +
+          "<li><strong>Hackathons:</strong> E.g., <em>\"What is a hackathon?\"</em> or <em>\"How to form a team?\"</em></li>" +
+          "<li><strong>GitHub:</strong> E.g., <em>\"What is GitHub?\"</em> or <em>\"Git commands\"</em></li>" +
+          "<li><strong>Web Development:</strong> E.g., <em>\"What is HTML?\"</em>, <em>\"CSS Flexbox\"</em>, <em>\"JavaScript\"</em></li>" +
+          "<li><strong>College Projects:</strong> E.g., <em>\"Suggest a college project\"</em> or <em>\"Viva presentation tips\"</em></li>" +
+          "<li><strong>Resume:</strong> E.g., <em>\"How to prepare a resume?\"</em></li>" +
+          "</ul>Try clicking one of the suggested buttons or typing one of the topics above!";
+      }
+
+      clearChatMessages() {
+        if (confirm("Clear your conversation history with Campus Buddy?")) {
+          this.chatHistory = [
+            {
+              sender: "bot",
+              text: "Chat cleared! How can I assist you with your college or tech learning today? &#128075;",
+              time: this.getCurrentTimeString()
+            }
+          ];
+          this.saveChatHistoryToStorage();
+          this.renderChatMessages();
+          this.showToast("Chat history cleared \uD83E\uDDF9");
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         UTILITY FUNCTIONS
+         ------------------------------------------------------------------------ */
+      showToast(message) {
+        const toast = document.getElementById("toast");
+        const msgEl = document.getElementById("toastMessage");
+        if (!toast || !msgEl) return;
+
+        msgEl.textContent = message;
+        toast.classList.add("show");
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 3200);
+      }
+
+      getCurrentTimeString() {
+        const now = new Date();
+        return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+
+      escapeHTML(str) {
+        if (typeof str !== "string") return str;
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+    }
+
+    // Initialize application when DOM is ready
+    let app;
+    document.addEventListener("DOMContentLoaded", () => {
+      app = new InternConnectApp();
+      app.init();
+    });
+  </script>
+</body>
+</html>
